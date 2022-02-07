@@ -14,9 +14,11 @@ public interface IStatusService {
 	public void dineroDisponible();
 	public Optional<Status> findById(int id);
 	
-	// prueba vender gallina
+	//vender gallina
 	public int idGallina (boolean esGallina) throws GallinaNotFoundException;
 	public void vender(int idGallina);
-	public List<Gallina> listarGallinas();
+	//listados
+	
+	
 
 }

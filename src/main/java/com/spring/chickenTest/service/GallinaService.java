@@ -48,6 +48,12 @@ public class GallinaService implements IGallinaService {
 		return res;
 	}
 
+	@Override
+	public List<Gallina> listarGallinas() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
  
 }
