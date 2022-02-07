@@ -36,7 +36,7 @@ public class StatusService implements IStatusService {
 		
 	}
 	@Override
-	public int contarGallinas() {		//
+	public int contarGallinas() {		//fffff
 		//int cantidadGallinas = contar(true);		
 		List<Gallina> listaCompleta = (List<Gallina>) iGallinaData.findAll();
 		int contar =0;
