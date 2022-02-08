@@ -17,14 +17,7 @@ public class Gallina {
 		private int idGallina;
 		private boolean isHuevo;
 		private double dinero;
-		private Date nacimiento;
 		
-		public Date getNacimiento() {
-			return nacimiento;
-		}
-		public void setNacimiento(Date nacimiento) {
-			this.nacimiento = nacimiento;
-		}
 		//constructor
 		public Gallina() {
 			

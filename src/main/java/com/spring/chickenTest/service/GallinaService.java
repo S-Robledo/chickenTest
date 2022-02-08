@@ -8,26 +8,35 @@ import org.springframework.stereotype.Service;
 
 import com.spring.chickenTest.interfaceService.IGallinaService;
 import com.spring.chickenTest.interfaces.IGallina;
-import com.spring.chickenTest.interfaces.IStatus;
 import com.spring.chickenTest.modelo.Gallina;
+import com.spring.chickenTest.modelo.ProductoException;
 
 @Service
 public class GallinaService implements IGallinaService {
 
 	@Autowired
-	private IGallina iGallinadata;
-	
-	@Autowired
-	private IStatus iStatusData;
-
-	
+	private IGallina iGallinaData;
+		
 	@Override public List<Gallina> listarProductos() {
-	    return (List<Gallina>) iGallinadata.findAll(); 
+	    return (List<Gallina>) iGallinaData.findAll(); 
 	}  
+
+	@Override
+	public List<Gallina> listarGallinas() {
+		List<Gallina> listaCompleta = (List<Gallina>) iGallinaData.findAll();
+		List<Gallina> listaGallinas = new ArrayList<Gallina>();
+
+		for(Gallina gallina : listaCompleta) {
+			if(!gallina.isHuevo()) {
+				listaGallinas.add(gallina);
+			}
+		}	
+		return listaGallinas;
+	}
 	  
 	@Override
 	public List<Gallina> listarHuevos() {		
-		List<Gallina> listaCompleta = (List<Gallina>) iGallinadata.findAll();
+		List<Gallina> listaCompleta = (List<Gallina>) iGallinaData.findAll();
 		List<Gallina> listaHuevos = new ArrayList<Gallina>();
 		
 		for(Gallina gallina : listaCompleta) {
@@ -39,21 +48,17 @@ public class GallinaService implements IGallinaService {
 	}
 	
 	@Override
-	public int save(Gallina g) {
+	public int crearProducto(Gallina g) throws ProductoException  {
 		int res=0;
-		Gallina gallina = iGallinadata.save(g);
+		Gallina gallina = iGallinaData.save(g);
 		if(!gallina.equals(null)) {
-			res=1;
+			throw new ProductoException("No se pudo crear el Producto");
 		}
 		return res;
 	}
 
 	@Override
-	public List<Gallina> listarGallinas() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
- 
+	public void eliminarProducto(int idGallina) {		
+		iGallinaData.deleteById(idGallina);
+		}
 }
