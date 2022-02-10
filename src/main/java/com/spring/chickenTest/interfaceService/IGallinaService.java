@@ -10,6 +10,6 @@ public interface IGallinaService {
 	public List<Gallina> listarProductos();
 	public List<Gallina> listarGallinas();
 	public List<Gallina> listarHuevos();
- 	public int crearProducto(Gallina g) throws ProductoException;
+ 	public void crearProducto(Gallina g) throws ProductoException;
  	public void eliminarProducto(int idGallina);
 }

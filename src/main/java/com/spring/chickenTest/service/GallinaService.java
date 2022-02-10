@@ -48,13 +48,14 @@ public class GallinaService implements IGallinaService {
 	}
 	
 	@Override
-	public int crearProducto(Gallina g) throws ProductoException  {
-		int res=0;
+	public void crearProducto(Gallina g) throws ProductoException  {
+		//hacerlo void
+		//int res=0;
 		Gallina gallina = iGallinaData.save(g);
-		if(!gallina.equals(null)) {
+		if(gallina.equals(null)) {
 			throw new ProductoException("No se pudo crear el Producto");
 		}
-		return res;
+		//return res;
 	}
 
 	@Override

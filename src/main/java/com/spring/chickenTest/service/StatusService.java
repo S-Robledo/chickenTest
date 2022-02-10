@@ -39,6 +39,14 @@ public class StatusService implements IStatusService {
 		throw new GallinaNotFoundException("No hay animales en la granja");
 	}
 
+	/*
+	 * @Override public int idGallina(boolean esGallina) { List<Gallina>
+	 * listaCompleta = (List<Gallina>) iGallinaData.findAll(); for (Gallina gallina
+	 * : listaCompleta) { if (esGallina && !gallina.isHuevo()) { return
+	 * gallina.getIdGallina(); } else if (!esGallina && gallina.isHuevo()) { return
+	 * gallina.getIdGallina(); } } return null; }
+	 */
+
 	@Override
 	public void dineroDisponible() {
 

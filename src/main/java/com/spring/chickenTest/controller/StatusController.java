@@ -40,7 +40,7 @@ public class StatusController {
 
 	@PostMapping("/comprarGallina")
 	public String comprarGallina() {
-		int limite = 3;
+		int limite = 4;
 		try {
 			if (iGallinaService.listarGallinas().size() < limite) {
 				Gallina g = new Gallina(false);
@@ -68,10 +68,17 @@ public class StatusController {
 
 	@PostMapping("/venderGallina")
 	public String venderGallina() {
-		int limite = 2;
 		try {
-			if (iGallinaService.listarGallinas().size() > limite) {
-				iGallinaService.eliminarProducto(iStatusService.idGallina(true));
+			int limite = 3;
+			//si no hay gallinas ver como mostrar la excepcion
+			if (iGallinaService.listarGallinas().size() <= 0) {
+				System.out.println("no hay nada para vender");
+			}
+			else if(iGallinaService.listarGallinas().size() > limite) {
+				int idGallina = iStatusService.idGallina(true);				
+				iGallinaService.eliminarProducto(idGallina);
+			} else {
+				System.out.println("ya no puede vender mas del limite");
 			}
 		} catch (GallinaNotFoundException e) {
 			e.printStackTrace();
@@ -81,10 +88,15 @@ public class StatusController {
 
 	@PostMapping("/venderHuevo")
 	public String venderhuevo() {
-		int limite = 1;
 		try {
-			if (iGallinaService.listarHuevos().size() > limite) {
+			int limite = 2;
+			if (iGallinaService.listarHuevos().size() <= 0) {
+				System.out.println("no hay nada para vender");
+			}
+			else if(iGallinaService.listarHuevos().size() > limite) {				 
 				iGallinaService.eliminarProducto(iStatusService.idGallina(false));
+			} else {
+				System.out.println("ya no puede vender mas del limite");
 			}
 		} catch (GallinaNotFoundException e) {
 			e.printStackTrace();
