@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.spring.chickenTest.interfaceService.IGallinaService;
 import com.spring.chickenTest.interfaceService.IStatusService;
+import com.spring.chickenTest.modelo.Cuenta;
 import com.spring.chickenTest.modelo.Gallina;
 import com.spring.chickenTest.modelo.GallinaNotFoundException;
 import com.spring.chickenTest.modelo.ProductoException;
@@ -24,6 +25,8 @@ public class StatusController {
 	private IGallinaService iGallinaService;
 	@Autowired
 	private IStatusService iStatusService;
+	
+	
 
 	@GetMapping("/listar")
 	public String listar(Model model) {
@@ -34,18 +37,28 @@ public class StatusController {
 		model.addAttribute("totalGranja", gallinas.size());
 		model.addAttribute("totalGallinas", iGallinaService.listarGallinas().size());
 		model.addAttribute("totalHuevos", iGallinaService.listarHuevos().size());
+	
+		model.addAttribute("DineroEnCuenta",  iStatusService.plataEnCuenta(1).get().getDineroCuenta());
 
 		return "index";
 	}
 
 	@PostMapping("/comprarGallina")
 	public String comprarGallina() {
-		int limite = 4;
+		int limite = 5;
 		try {
-			if (iGallinaService.listarGallinas().size() < limite) {
-				Gallina g = new Gallina(false);
-				iGallinaService.crearProducto(g);
+			if(iStatusService.plataEnCuenta(1).get().getDineroCuenta() > 2000) {
+				if (iGallinaService.listarGallinas().size() < limite) {
+					Gallina g = new Gallina(false);
+					iGallinaService.crearProducto(g);
+					//desarrollando 
+					Cuenta cuenta = iStatusService.plataEnCuenta(1).get();
+					//cuenta.setDineroCuenta(cuenta.getDineroCuenta() -100);
+					cuenta.comprarGallina();
+					iStatusService.ActualizarSaldo(cuenta);
+				}
 			}
+			
 		} catch (ProductoException e) {
 			e.printStackTrace();
 		}
@@ -77,6 +90,9 @@ public class StatusController {
 			else if(iGallinaService.listarGallinas().size() > limite) {
 				int idGallina = iStatusService.idGallina(true);				
 				iGallinaService.eliminarProducto(idGallina);
+				Cuenta cuenta = iStatusService.plataEnCuenta(1).get();
+				cuenta.venderGallina();
+				iStatusService.ActualizarSaldo(cuenta);
 			} else {
 				System.out.println("ya no puede vender mas del limite");
 			}
