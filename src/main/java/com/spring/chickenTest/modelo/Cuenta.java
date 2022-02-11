@@ -9,10 +9,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "cuenta")
 public class Cuenta {
-	@Id	
+	@Id
 	private int idCuenta;
 	private double dineroCuenta;
-	
+
 	public Cuenta() {
 		// TODO Auto-generated constructor stub
 	}
@@ -32,12 +32,21 @@ public class Cuenta {
 	public void setDineroCuenta(double dineroCuenta) {
 		this.dineroCuenta = dineroCuenta;
 	}
-	
-	public void venderGallina() {		
-		this.setDineroCuenta(this.getDineroCuenta() + 100);
-	}
+
 	public void comprarGallina() {
 		this.setDineroCuenta(this.getDineroCuenta() - 50);
 	}
-	
+
+	public void venderGallina() {
+		this.setDineroCuenta(this.getDineroCuenta() + 100);
+	}
+
+	public void comprarHuevo() {
+		this.setDineroCuenta(this.getDineroCuenta() - 30);
+	}
+
+	public void venderHuevo() {
+		this.setDineroCuenta(this.getDineroCuenta() + 80);
+	}
+
 }

@@ -25,7 +25,7 @@ public class StatusService implements IStatusService {
 	private IStatus iStatusData;
 	
 	@Autowired
-	private ICuenta iCuenta;
+	private ICuenta iCuentaData;
 
 	@Override
 	public int idGallina(boolean esGallina) throws GallinaNotFoundException {
@@ -61,13 +61,20 @@ public class StatusService implements IStatusService {
 	 */
 	@Override
 	public Optional<Cuenta> plataEnCuenta(int id){
-		 return iCuenta.findById(id);
+		 return iCuentaData.findById(id);
 	}
 
 	@Override
 	public void ActualizarSaldo(Cuenta cuenta) {
-		iCuenta.save(cuenta);
+		iCuentaData.save(cuenta);
 		//iCuenta.save(null)
 		
+	}
+
+	@Override
+	public int pasarDeDia() {
+		// TODO Auto-generated method stub
+		int dia = 1;
+		return dia;
 	}
 }

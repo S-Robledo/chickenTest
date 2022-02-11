@@ -14,7 +14,8 @@
 
 		<!-- <a th:href="@{/save}" custom:linkMethod="post">Comprar</a> -->
 		<div class="btn-group btn-group-lg" role="group" aria-label="...">
-			<form th:action="@{/comprarGallina}" th:objet=${Gallina} method="POST">
+			<form th:action="@{/comprarGallina}" th:objet=${Gallina}
+				method="POST">
 				<div>
 					<input type="submit" value="Comprar Gallina"
 						class="btn btn-success">
@@ -25,25 +26,23 @@
 					<input type="submit" value="Comprar Huevo" class="btn btn-success">
 				</div>
 			</form>
-			 		<form th:action="@{/venderGallina}" th:objet=${Status} method="POST">
+			<form th:action="@{/venderGallina}" th:objet=${Status} method="POST">
 				<div>
 					<input type="submit" value="Vender Gallina" class="btn btn-success">
 				</div>
 			</form>
-			
+
 			<form th:action="@{/venderHuevo}" th:objet=${Status} method="POST">
 				<div>
-					<input type="submit" value="Vender Huevos"
-						class="btn btn-success">
+					<input type="submit" value="Vender Huevos" class="btn btn-success">
 				</div>
 			</form>
-			<!--
-			<form th:action="@{/contarHuevos}" th:objet=${Status} method="POST">
+
+			<form th:action="@{/pasarDeDia}" th:objet=${Status} method="GET">
 				<div>
-					<input type="submit" value="Contar Gallinas"
-						class="btn btn-success">
+					<input type="submit" value="Pasar de Dia" class="btn btn-success">
 				</div>
-			</form> -->
+			</form>
 
 
 
@@ -51,15 +50,16 @@
 
 		<br>
 		<p th:text="'La fecha es: ' + ${fecha}" />
-		 
+
 		<p th:text="'El total de la granja es: ' + ${totalGranja}" />
-		 
+
 		<p th:text="'Cantidad de Gallinas: ' + ${totalGallinas}" />
 		<br>
 		<p th:text="'Cantidad de Huevos: ' + ${totalHuevos}" />
 		<br>
 		<p th:text="'Dinero disponible: ' + ${DineroEnCuenta}" />
 		<br>
+		<p th:text="'dia: ' + ${dia}" />
 		<table class="table">
 			<thead>
 				<tr>
