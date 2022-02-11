@@ -12,4 +12,7 @@ public interface IGallinaService {
 	public List<Gallina> listarHuevos();
  	public void crearProducto(Gallina g) throws ProductoException;
  	public void eliminarProducto(int idGallina);
+ 	
+ 	//pasar huevo a gallina
+ 	
 }

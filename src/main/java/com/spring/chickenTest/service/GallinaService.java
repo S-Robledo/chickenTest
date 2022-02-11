@@ -10,6 +10,7 @@ import com.spring.chickenTest.interfaceService.IGallinaService;
 import com.spring.chickenTest.interfaces.IGallina;
 import com.spring.chickenTest.modelo.Gallina;
 import com.spring.chickenTest.modelo.ProductoException;
+import com.spring.chickenTest.modelo.SinDineroException;
 
 @Service
 public class GallinaService implements IGallinaService {
@@ -59,4 +60,14 @@ public class GallinaService implements IGallinaService {
 	public void eliminarProducto(int idGallina) {		
 		iGallinaData.deleteById(idGallina);
 		}
+	
+	private void comprarGallina() {
+		try {
+			this.setDineroCuenta(this.getDineroCuenta() - 50);
+
+		} catch (SinDineroException e) {
+
+		}
+
+	}
 }

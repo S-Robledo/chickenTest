@@ -1,5 +1,6 @@
 package com.spring.chickenTest.modelo;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -17,6 +18,10 @@ public class Gallina {
 		private int idGallina;
 		private boolean isHuevo;
 		private double dinero;
+		//adjuntar fecha creacion
+		
+		private Date fechaCreacion;
+		private Date pasarDeDia;
 		
 		//constructor
 		public Gallina() {
@@ -25,6 +30,8 @@ public class Gallina {
 		public Gallina(boolean b) {
 			this.isHuevo = b;
 			this.dinero = 100;
+			this.fechaCreacion = new Date();
+			this.pasarDeDia = java.sql.Date.valueOf(LocalDate.now());
 			
 		}
 		public int getIdGallina() {
@@ -46,6 +53,20 @@ public class Gallina {
 			this.dinero = dinero;
 		}
 		
+		
+		//adjuntar fecha creacion
+		public Date getFechaCreacion() {
+			return fechaCreacion;
+		}
+		public void setFechaCreacion(Date fechaCreacion) {
+			this.fechaCreacion = fechaCreacion;
+		}
+		
+		//pasar de dia
+		
+		public void pasarDeDia() {
+			
+		}
 		
 		
 				

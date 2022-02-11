@@ -29,13 +29,14 @@ public class Cuenta {
 		return dineroCuenta;
 	}
 
-	public void setDineroCuenta(double dineroCuenta) {
+	public void setDineroCuenta(double dineroCuenta)  throws SinDineroException {
+		if(dineroCuenta < 0) {
+			throw new SinDineroException();
+		}
 		this.dineroCuenta = dineroCuenta;
 	}
 
-	public void comprarGallina() {
-		this.setDineroCuenta(this.getDineroCuenta() - 50);
-	}
+	//crear metodo get cuenta
 
 	public void venderGallina() {
 		this.setDineroCuenta(this.getDineroCuenta() + 100);

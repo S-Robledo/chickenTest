@@ -50,7 +50,7 @@ public class StatusController {
 				if (iGallinaService.listarGallinas().size() < limite) {
 					Gallina g = new Gallina(false);
 					iGallinaService.crearProducto(g);
-					// desarrollando
+					// desarrollando comprarGallina();
 					Cuenta cuenta = iStatusService.plataEnCuenta(1).get();
 					cuenta.comprarGallina();
 					iStatusService.ActualizarSaldo(cuenta);
