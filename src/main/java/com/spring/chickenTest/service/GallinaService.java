@@ -67,10 +67,10 @@ public class GallinaService implements IGallinaService {
 		Cuenta cuenta = iStatusService.plataEnCuenta(1).get();
 		try {
 			cuenta.setDineroCuenta(dineroCuenta);
+			iCuentaData.save(cuenta);
 		} catch (SinDineroException e) {
 			e.printStackTrace();
 		}
-		iCuentaData.save(cuenta);
 		try {
 			Gallina g = new Gallina(false);
 			Gallina gallina = iGallinaData.save(g);
@@ -88,10 +88,10 @@ public class GallinaService implements IGallinaService {
 		Cuenta cuenta = iStatusService.plataEnCuenta(1).get();
 		try {
 			cuenta.setDineroCuenta(dineroCuenta);
+			iCuentaData.save(cuenta);
 		} catch (SinDineroException e) {
 			e.printStackTrace();
 		}
-		iCuentaData.save(cuenta);
 		try {
 			Gallina g = new Gallina(true);
 			Gallina gallina = iGallinaData.save(g);
@@ -104,15 +104,27 @@ public class GallinaService implements IGallinaService {
 	}
 
 	@Override
-	public void eliminarProducto(int idGallina) {
-		
-		iGallinaData.deleteById(idGallina);
+	public void eliminarProducto(Gallina gallina) {
+		double dineroCuenta = 0;
+		if (!gallina.isHuevo()) {
+			dineroCuenta = 100;
+		} else {
+			dineroCuenta = 40;
+		}
+		Cuenta cuenta = iStatusService.plataEnCuenta(1).get();
+		try {
+			cuenta.setDineroCuenta(dineroCuenta);
+			iCuentaData.save(cuenta);
+		} catch (SinDineroException e) {
+			e.printStackTrace();
+		}
+		iGallinaData.deleteById(gallina.getIdGallina());
 	}
 
 	@Override
 	public void comprarGallina() throws SinDineroException {
 		int limite = 15;
-		if (iStatusService.plataEnCuenta(1).get().getDineroCuenta() > 2000) {
+		if (iStatusService.plataEnCuenta(1).get().getDineroCuenta() >= 2100) {
 			if (this.listarGallinas().size() < limite) {
 				try {
 					this.crearGallina();
@@ -132,7 +144,7 @@ public class GallinaService implements IGallinaService {
 	@Override
 	public void comprarHuevo() throws SinDineroException {
 		int limite = 5;
-		if (iStatusService.plataEnCuenta(1).get().getDineroCuenta() > 2000) {
+		if (iStatusService.plataEnCuenta(1).get().getDineroCuenta() >= 2050) {
 			if (this.listarHuevos().size() < limite) {
 				try {
 					this.crearHuevo();
@@ -157,14 +169,14 @@ public class GallinaService implements IGallinaService {
 				if (this.listarGallinas().size() <= 0) {
 					System.out.println("no hay nada para vender");
 				} else if (this.listarGallinas().size() > limite) {
-					int idGallina = iStatusService.idGallina(true);
-					this.eliminarProducto(idGallina);
-					
+					// int idGallina = iStatusService.idGallina(true);
+					Gallina gallina = iStatusService.idGallina(true);
+					// this.eliminarProducto(idGallina);
+					this.eliminarProducto(gallina);
 					// Cuenta cuenta = iStatusService.plataEnCuenta(1).get();
-					// cuenta.venderGallina(); 
-					//iStatusService.ActualizarSaldo(cuenta); 
-				} 
-				else {
+					// cuenta.venderGallina();
+					// iStatusService.ActualizarSaldo(cuenta);
+				} else {
 					System.out.println("ya no puede vender mas del limite");
 				}
 			} else {
@@ -173,12 +185,28 @@ public class GallinaService implements IGallinaService {
 		} catch (GallinaNotFoundException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@Override
-	public void venderHuevo() throws GallinaNotFoundException {
-		// TODO Auto-generated method stub
-
+	public void venderHuevo() throws GallinaNotFoundException {		
+		try {
+			int limite = 2;
+			if (iStatusService.plataEnCuenta(1).get().getDineroCuenta() < 10000) {
+				if (this.listarHuevos().size() <= 0) {
+					System.out.println("no hay nada para vender");
+				} else if (this.listarHuevos().size() > limite) {
+					Gallina gallina = iStatusService.idGallina(false);
+					this.eliminarProducto(gallina); // Cuenta
+					//cuenta = iStatusService.plataEnCuenta(1).get(); // cuenta.venderHuevo();
+					// iStatusService.ActualizarSaldo(cuenta); } else {
+					System.out.println("ya no puede vender mas del limite");
+				}
+			} else {
+				System.out.println("Se llego al limite de dinero ingresado");
+			}
+		} catch (GallinaNotFoundException e) {
+			e.printStackTrace();
+		}
+		 
 	}
 }

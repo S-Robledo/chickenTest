@@ -19,7 +19,7 @@ public interface IGallinaService {
  	public void crearGallina() throws ProductoException;
  	public void crearHuevo() throws ProductoException;
  	
- 	public void eliminarProducto(int idGallina); 	
+ 	public void eliminarProducto(Gallina gallina); 	
  	public void comprarGallina() throws SinDineroException; 	
  	public void comprarHuevo() throws SinDineroException;
  	public void venderGallina() throws GallinaNotFoundException;

@@ -40,6 +40,7 @@ public class Gallina {
 		public void setIdGallina(int idGallina) {
 			this.idGallina = idGallina;
 		}
+		 
 		public boolean isHuevo() {
 			return isHuevo;
 		}

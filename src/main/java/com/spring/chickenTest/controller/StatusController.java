@@ -35,7 +35,7 @@ public class StatusController {
 		model.addAttribute("totalGranja", gallinas.size());
 		model.addAttribute("totalGallinas", iGallinaService.listarGallinas().size());
 		model.addAttribute("totalHuevos", iGallinaService.listarHuevos().size());
-		model.addAttribute("DineroEnCuenta", iStatusService.plataEnCuenta(1).get().getDineroCuenta());
+		model.addAttribute("dineroEnCuenta", iStatusService.plataEnCuenta(1).get().getDineroCuenta());
 		model.addAttribute("pasarDeDia", iStatusService.pasarDeDia());
 
 		return "index";
@@ -48,17 +48,16 @@ public class StatusController {
 		} catch (SinDineroException e) {
 			e.printStackTrace();
 		}
-
 		return "redirect:/listar";
 	}
 
 	@PostMapping("/comprarHuevo")
 	public String comprarHuevo() {
-			try {
-				iGallinaService.comprarHuevo();
-			} catch (SinDineroException e) {
-				e.printStackTrace();
-			}
+		try {
+			iGallinaService.comprarHuevo();
+		} catch (SinDineroException e) {
+			e.printStackTrace();
+		}
 		return "redirect:/listar";
 	}
 
@@ -74,19 +73,12 @@ public class StatusController {
 
 	@PostMapping("/venderHuevo")
 	public String venderhuevo() {
-		/*
-		 * try { int limite = 2; if
-		 * (iStatusService.plataEnCuenta(1).get().getDineroCuenta() < 10000) { if
-		 * (iGallinaService.listarHuevos().size() <= 0) {
-		 * System.out.println("no hay nada para vender"); } else if
-		 * (iGallinaService.listarHuevos().size() > limite) {
-		 * iGallinaService.eliminarProducto(iStatusService.idGallina(false)); //Cuenta
-		 * cuenta = iStatusService.plataEnCuenta(1).get(); //cuenta.venderHuevo();
-		 * //iStatusService.ActualizarSaldo(cuenta); } else {
-		 * System.out.println("ya no puede vender mas del limite"); } } else {
-		 * System.out.println("Se llego al limite de dinero ingresado"); } } catch
-		 * (GallinaNotFoundException e) { e.printStackTrace(); }
-		 */
+		try {
+			iGallinaService.venderHuevo();
+		} catch (GallinaNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return "redirect:/listar";
 	}
 

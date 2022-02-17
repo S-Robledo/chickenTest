@@ -39,19 +39,21 @@ public class StatusService implements IStatusService {
 	}
 
 	@Override
-	public int idGallina(boolean esGallina) throws GallinaNotFoundException {
+	public Gallina idGallina(boolean esGallina) throws GallinaNotFoundException { //era int idGallina
 		List<Gallina> listaCompleta = (List<Gallina>) iGallinaData.findAll();
 
 		if (esGallina) {
 			for (Gallina gallina : listaCompleta) {
 				if (!gallina.isHuevo()) {
-					return gallina.getIdGallina();
+					//return gallina.getIdGallina();
+					return gallina;
 				}
 			}
 		} else if (!esGallina) {
 			for (Gallina gallina : listaCompleta) {
 				if (gallina.isHuevo()) {
-					return gallina.getIdGallina();
+					//return gallina.getIdGallina();
+					return gallina;
 				}
 			}
 		}
