@@ -1,8 +1,7 @@
 package com.spring.chickenTest.modelo;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -30,23 +29,25 @@ public class Cuenta {
 	}
 
 	public void setDineroCuenta(double dineroCuenta)  throws SinDineroException {
-		if(dineroCuenta < 0) {
-			throw new SinDineroException();
+		if(this.dineroCuenta <  0) {
+			throw new SinDineroException("no hay dinero en cuenta");
 		}
-		this.dineroCuenta = dineroCuenta;
+		this.dineroCuenta += dineroCuenta;
 	}
 
 	//crear metodo get cuenta
+	
+	
 
-	public void venderGallina() {
+	public void venderGallina() throws SinDineroException {
 		this.setDineroCuenta(this.getDineroCuenta() + 100);
 	}
 
-	public void comprarHuevo() {
+	public void comprarHuevo() throws SinDineroException {
 		this.setDineroCuenta(this.getDineroCuenta() - 30);
 	}
 
-	public void venderHuevo() {
+	public void venderHuevo() throws SinDineroException {
 		this.setDineroCuenta(this.getDineroCuenta() + 80);
 	}
 

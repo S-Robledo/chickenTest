@@ -9,6 +9,5 @@ public interface IStatusService {
 	//vender gallina
 	public int idGallina (boolean esGallina) throws GallinaNotFoundException;		
 	public Optional<Cuenta> plataEnCuenta(int id);
-	public void ActualizarSaldo(Cuenta cuenta);
 	public int pasarDeDia();
 }
