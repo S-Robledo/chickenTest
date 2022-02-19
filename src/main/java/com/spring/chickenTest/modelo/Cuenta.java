@@ -13,7 +13,8 @@ public class Cuenta {
 	private double dineroCuenta;
 
 	public Cuenta() {
-		// TODO Auto-generated constructor stub
+		this.idCuenta=1;
+		this.dineroCuenta=2400;
 	}
 
 	public int getIdCuenta() {
@@ -32,7 +33,9 @@ public class Cuenta {
 		if(this.dineroCuenta <  0) {
 			throw new SinDineroException("no hay dinero en cuenta");
 		}
-		this.dineroCuenta += dineroCuenta;
+		if((this.dineroCuenta += dineroCuenta) < 0) {
+			throw new SinDineroException("no hay suficiente dinero en cuenta");
+		}
 	}
 
 	//crear metodo get cuenta

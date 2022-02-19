@@ -16,13 +16,13 @@ public interface IGallinaService {
  	
  	//cambiar crearProducto por crearGallina y crearHuevo  
 	//public void crearProducto(Gallina g) throws ProductoException;
- 	public void crearGallina() throws ProductoException;
- 	public void crearHuevo() throws ProductoException;
+ 	public void crearGallina(int cant) throws ProductoException, SinDineroException;
+ 	public void crearHuevo(int cant) throws ProductoException;
  	
  	public void eliminarProducto(Gallina gallina); 	
- 	public void comprarGallina() throws SinDineroException; 	
- 	public void comprarHuevo() throws SinDineroException;
- 	public void venderGallina() throws GallinaNotFoundException;
- 	public void venderHuevo() throws GallinaNotFoundException;
+ 	public void comprarGallina(int cant) throws SinDineroException, ProductoException; 	
+ 	public void comprarHuevo(int cant) throws SinDineroException, ProductoException;
+ 	public void venderGallina(int cant) throws GallinaNotFoundException;
+ 	public void venderHuevo(int cant) throws GallinaNotFoundException;
  	//pasar huevo a gallina 	
 }

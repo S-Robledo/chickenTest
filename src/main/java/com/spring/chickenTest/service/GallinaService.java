@@ -62,42 +62,50 @@ public class GallinaService implements IGallinaService {
 	}
 
 	@Override
-	public void crearGallina() throws ProductoException {
-		double dineroCuenta = -100;
+	public void crearGallina(int cant) throws ProductoException, SinDineroException { // funciona
+		double dineroCuenta = -100 * cant;
 		Cuenta cuenta = iStatusService.plataEnCuenta(1).get();
 		try {
+			if(iStatusService.plataEnCuenta(1).get().getDineroCuenta() + dineroCuenta <= 1100) {
+				throw new SinDineroException("crear Gallina. no se puede gastar mas del limite: " 
+						+ iStatusService.plataEnCuenta(1).get().getDineroCuenta() + dineroCuenta);
+			}
 			cuenta.setDineroCuenta(dineroCuenta);
 			iCuentaData.save(cuenta);
+			for (int i = 0; i < cant; i++) {
+				Gallina g = new Gallina(false);
+				Gallina gallina = iGallinaData.save(g);
+				if (gallina.equals(null)) {
+					throw new ProductoException("No se pudo crear Gallina");
+				}
+			}
 		} catch (SinDineroException e) {
 			e.printStackTrace();
-		}
-		try {
-			Gallina g = new Gallina(false);
-			Gallina gallina = iGallinaData.save(g);
-			if (gallina.equals(null)) {
-				throw new ProductoException("No se pudo crear Gallina");
-			}
 		} catch (ProductoException e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public void crearHuevo() throws ProductoException {
-		double dineroCuenta = -50;
+	public void crearHuevo(int cant) throws ProductoException {
+		double dineroCuenta = -50 * cant;
 		Cuenta cuenta = iStatusService.plataEnCuenta(1).get();
 		try {
+			if(iStatusService.plataEnCuenta(1).get().getDineroCuenta() + dineroCuenta <= 1100) {
+				throw new SinDineroException("crear Gallina. no se puede gastar mas del limite: " 
+						+ iStatusService.plataEnCuenta(1).get().getDineroCuenta() + dineroCuenta);
+			}
 			cuenta.setDineroCuenta(dineroCuenta);
 			iCuentaData.save(cuenta);
+			for (int i = 0; i < cant; i++) {
+				Gallina g = new Gallina(true);
+				Gallina gallina = iGallinaData.save(g);
+				if (gallina.equals(null)) {
+					throw new ProductoException("No se pudo crear Huevo");
+				}
+			}
 		} catch (SinDineroException e) {
 			e.printStackTrace();
-		}
-		try {
-			Gallina g = new Gallina(true);
-			Gallina gallina = iGallinaData.save(g);
-			if (gallina.equals(null)) {
-				throw new ProductoException("No se pudo crear Huevo");
-			}
 		} catch (ProductoException e) {
 			e.printStackTrace();
 		}
@@ -115,21 +123,20 @@ public class GallinaService implements IGallinaService {
 		try {
 			cuenta.setDineroCuenta(dineroCuenta);
 			iCuentaData.save(cuenta);
+			iGallinaData.deleteById(gallina.getIdGallina());
 		} catch (SinDineroException e) {
 			e.printStackTrace();
 		}
-		iGallinaData.deleteById(gallina.getIdGallina());
 	}
 
 	@Override
-	public void comprarGallina() throws SinDineroException {
+	public void comprarGallina(int cant) throws ProductoException, SinDineroException {
 		int limite = 15;
-		if (iStatusService.plataEnCuenta(1).get().getDineroCuenta() >= 2100) {
-			if (this.listarGallinas().size() < limite) {
+		if (iStatusService.plataEnCuenta(1).get().getDineroCuenta() >= 1100) {
+			if (this.listarGallinas().size() < limite && cant < limite) {
 				try {
-					this.crearGallina();
-				} catch (ProductoException e) {
-					// TODO Auto-generated catch block
+					this.crearGallina(cant);
+				} catch (SinDineroException | ProductoException e) {
 					e.printStackTrace();
 				}
 			} else {
@@ -142,12 +149,12 @@ public class GallinaService implements IGallinaService {
 	}
 
 	@Override
-	public void comprarHuevo() throws SinDineroException {
+	public void comprarHuevo(int cant) throws ProductoException, SinDineroException {
 		int limite = 5;
 		if (iStatusService.plataEnCuenta(1).get().getDineroCuenta() >= 2050) {
-			if (this.listarHuevos().size() < limite) {
+			if (this.listarHuevos().size() < limite && cant < limite) {
 				try {
-					this.crearHuevo();
+					this.crearHuevo(cant);
 				} catch (ProductoException e) {
 					e.printStackTrace();
 				}
@@ -161,7 +168,8 @@ public class GallinaService implements IGallinaService {
 	}
 
 	@Override
-	public void venderGallina() throws GallinaNotFoundException {
+	public void venderGallina(int cant) throws GallinaNotFoundException {
+		 
 		try {
 			int limite = 3;
 			if (iStatusService.plataEnCuenta(1).get().getDineroCuenta() < 10000) { // si no
@@ -169,13 +177,11 @@ public class GallinaService implements IGallinaService {
 				if (this.listarGallinas().size() <= 0) {
 					System.out.println("no hay nada para vender");
 				} else if (this.listarGallinas().size() > limite) {
-					// int idGallina = iStatusService.idGallina(true);
-					Gallina gallina = iStatusService.idGallina(true);
-					// this.eliminarProducto(idGallina);
-					this.eliminarProducto(gallina);
-					// Cuenta cuenta = iStatusService.plataEnCuenta(1).get();
-					// cuenta.venderGallina();
-					// iStatusService.ActualizarSaldo(cuenta);
+					for(int i=0; i<cant; i++) {
+						Gallina gallina = iStatusService.idGallina(true);
+						this.eliminarProducto(gallina);
+					}
+					
 				} else {
 					System.out.println("ya no puede vender mas del limite");
 				}
@@ -188,7 +194,7 @@ public class GallinaService implements IGallinaService {
 	}
 
 	@Override
-	public void venderHuevo() throws GallinaNotFoundException {		
+	public void venderHuevo(int cant) throws GallinaNotFoundException {
 		try {
 			int limite = 2;
 			if (iStatusService.plataEnCuenta(1).get().getDineroCuenta() < 10000) {
@@ -196,9 +202,8 @@ public class GallinaService implements IGallinaService {
 					System.out.println("no hay nada para vender");
 				} else if (this.listarHuevos().size() > limite) {
 					Gallina gallina = iStatusService.idGallina(false);
-					this.eliminarProducto(gallina); // Cuenta
-					//cuenta = iStatusService.plataEnCuenta(1).get(); // cuenta.venderHuevo();
-					// iStatusService.ActualizarSaldo(cuenta); } else {
+					this.eliminarProducto(gallina);
+				} else {
 					System.out.println("ya no puede vender mas del limite");
 				}
 			} else {
@@ -207,6 +212,6 @@ public class GallinaService implements IGallinaService {
 		} catch (GallinaNotFoundException e) {
 			e.printStackTrace();
 		}
-		 
+
 	}
 }

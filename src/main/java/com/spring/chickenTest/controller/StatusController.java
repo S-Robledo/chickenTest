@@ -7,14 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.chickenTest.interfaceService.IGallinaService;
 import com.spring.chickenTest.interfaceService.IStatusService;
 import com.spring.chickenTest.modelo.ExceedsLimitException;
 import com.spring.chickenTest.modelo.Gallina;
 import com.spring.chickenTest.modelo.GallinaNotFoundException;
+import com.spring.chickenTest.modelo.ProductoException;
 import com.spring.chickenTest.modelo.SinDineroException;
 
 @Controller
@@ -28,9 +31,12 @@ public class StatusController {
 
 	@GetMapping("/listar")
 	public String listar(Model model) {
-		List<Gallina> gallinas = iGallinaService.listarProductos();
+		// List<Gallina> gallinas = iGallinaService.listarProductos();
+		List<Gallina> gallinas = iGallinaService.listarGallinas();
+		List<Gallina> huevos = iGallinaService.listarHuevos();
 
 		model.addAttribute("gallinas", gallinas);
+		model.addAttribute("huevos", huevos);
 		model.addAttribute("fecha", LocalDate.now());
 		model.addAttribute("totalGranja", gallinas.size());
 		model.addAttribute("totalGallinas", iGallinaService.listarGallinas().size());
@@ -40,31 +46,31 @@ public class StatusController {
 
 		return "index";
 	}
-
+	
 	@PostMapping("/comprarGallina")
-	public String comprarGallina() {
+	public String comprarGallina(@RequestParam(value = "cant", defaultValue = "1") int cant) {
 		try {
-			iGallinaService.comprarGallina();
-		} catch (SinDineroException e) {
+			iGallinaService.comprarGallina(cant);
+		} catch (SinDineroException | ProductoException e) {
 			e.printStackTrace();
 		}
 		return "redirect:/listar";
 	}
 
 	@PostMapping("/comprarHuevo")
-	public String comprarHuevo() {
+	public String comprarHuevo(@RequestParam(value = "cant", defaultValue = "1") int cant) {
 		try {
-			iGallinaService.comprarHuevo();
-		} catch (SinDineroException e) {
+			iGallinaService.comprarHuevo(cant);
+		} catch (SinDineroException | ProductoException e) {
 			e.printStackTrace();
 		}
 		return "redirect:/listar";
 	}
 
 	@PostMapping("/venderGallina")
-	public String venderGallina() {
+	public String venderGallina(@RequestParam(value = "cant", defaultValue = "1") int cant) {
 		try {
-			iGallinaService.venderGallina();
+			iGallinaService.venderGallina(cant);
 		} catch (GallinaNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -72,11 +78,10 @@ public class StatusController {
 	}
 
 	@PostMapping("/venderHuevo")
-	public String venderhuevo() {
+	public String venderhuevo(@RequestParam(value = "cant", defaultValue = "1") int cant) {
 		try {
-			iGallinaService.venderHuevo();
+			iGallinaService.venderHuevo(cant);
 		} catch (GallinaNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "redirect:/listar";
