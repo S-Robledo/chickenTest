@@ -13,8 +13,12 @@ public class Cuenta {
 	private double dineroCuenta;
 
 	public Cuenta() {
-		this.idCuenta=1;
-		this.dineroCuenta=2400;
+		
+	}
+	
+	public Cuenta(int idCuenta, double dineroCuenta) {
+		this.idCuenta = idCuenta;
+		this.dineroCuenta = dineroCuenta;
 	}
 
 	public int getIdCuenta() {
@@ -42,16 +46,16 @@ public class Cuenta {
 	
 	
 
-	public void venderGallina() throws SinDineroException {
-		this.setDineroCuenta(this.getDineroCuenta() + 100);
-	}
-
-	public void comprarHuevo() throws SinDineroException {
-		this.setDineroCuenta(this.getDineroCuenta() - 30);
-	}
-
-	public void venderHuevo() throws SinDineroException {
-		this.setDineroCuenta(this.getDineroCuenta() + 80);
-	}
+//	public void venderGallina() throws SinDineroException {
+//		this.setDineroCuenta(this.getDineroCuenta() + 100);
+//	}
+//
+//	public void comprarHuevo() throws SinDineroException {
+//		this.setDineroCuenta(this.getDineroCuenta() - 30);
+//	}
+//
+//	public void venderHuevo() throws SinDineroException {
+//		this.setDineroCuenta(this.getDineroCuenta() + 80);
+//	}
 
 }

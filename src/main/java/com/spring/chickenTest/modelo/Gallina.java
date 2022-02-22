@@ -1,8 +1,10 @@
 package com.spring.chickenTest.modelo;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,13 +17,23 @@ public class Gallina {
 
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
+		@Column(name = "ID_GALLINA")
 		private int idGallina;
+		
+		@Column(name = "IS_HUEVO")
 		private boolean isHuevo;
+		
+		@Column(name = "DINERO")
 		private double dinero;
 		//adjuntar fecha creacion
 		
-		private Date fechaCreacion;
-		private Date pasarDeDia;
+		@Column(name = "CREACION")
+		private int creacion;
+		
+		@Column(name = "PASAR_DIA")
+		private int pasarDia;
+		//private Date fechaCreacion;
+		//private Date pasarDeDia;
 		
 		//constructor
 		public Gallina() {
@@ -30,9 +42,10 @@ public class Gallina {
 		public Gallina(boolean b) {
 			this.isHuevo = b;
 			this.dinero = 100;
-			this.fechaCreacion = new Date();
-			this.pasarDeDia = java.sql.Date.valueOf(LocalDate.now());
-			
+			//this.fechaCreacion = new Date();
+			//this.pasarDeDia = java.sql.Date.valueOf(LocalDate.now());
+			this.creacion=0;
+			this.pasarDia=0;
 		}
 		public int getIdGallina() {
 			return idGallina;
@@ -54,21 +67,25 @@ public class Gallina {
 			this.dinero = dinero;
 		}
 		
+		public int getCreacion() {
+			return creacion;
+		}
+		public void setCreacion(int creacion) {
+			this.creacion = creacion;
+		}
 		
+		public int getPasarDia() {
+			return pasarDia;
+		}
+		public void setPasarDia(int pasarDia) {
+			this.pasarDia = pasarDia;
+		}
 		//adjuntar fecha creacion
-		public Date getFechaCreacion() {
-			return fechaCreacion;
-		}
-		public void setFechaCreacion(Date fechaCreacion) {
-			this.fechaCreacion = fechaCreacion;
-		}
-		
-		//pasar de dia
-		
-		public void pasarDeDia() {
-			
-		}
-		
-		
-				
+//		public Date getFechaCreacion() {
+//			return fechaCreacion;
+//		}
+//		public void setFechaCreacion(Date fechaCreacion) {
+//			this.fechaCreacion = fechaCreacion;
+//		}
+						
 }

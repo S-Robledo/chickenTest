@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.chickenTest.interfaceService.IGallinaService;
 import com.spring.chickenTest.interfaceService.IStatusService;
-import com.spring.chickenTest.modelo.ExceedsLimitException;
+
 import com.spring.chickenTest.modelo.Gallina;
 import com.spring.chickenTest.modelo.GallinaNotFoundException;
 import com.spring.chickenTest.modelo.ProductoException;
@@ -28,10 +28,19 @@ public class StatusController {
 	private IGallinaService iGallinaService;
 	@Autowired
 	private IStatusService iStatusService;
+	
+	private boolean inicio=true;
 
 	@GetMapping("/listar")
 	public String listar(Model model) {
-		// List<Gallina> gallinas = iGallinaService.listarProductos();
+		if(inicio) {
+			iGallinaService.inicializarSaldo();
+			
+			inicio=false;
+			
+		}
+		
+		List<Gallina> totalGallinas = iGallinaService.listarProductos();
 		List<Gallina> gallinas = iGallinaService.listarGallinas();
 		List<Gallina> huevos = iGallinaService.listarHuevos();
 
@@ -42,19 +51,27 @@ public class StatusController {
 		model.addAttribute("totalGallinas", iGallinaService.listarGallinas().size());
 		model.addAttribute("totalHuevos", iGallinaService.listarHuevos().size());
 		model.addAttribute("dineroEnCuenta", iStatusService.plataEnCuenta(1).get().getDineroCuenta());
-		model.addAttribute("pasarDeDia", iStatusService.pasarDeDia());
+		model.addAttribute("pasarDeDia", iStatusService.obtenerDia());
 
 		return "index";
 	}
 	
+	@GetMapping("/comprar")
+	public String comprar(Model model) {
+		model.addAttribute("totalGallinas", iGallinaService.listarGallinas().size()); 
+		model.addAttribute("dineroEnCuenta", iStatusService.plataEnCuenta(1).get().getDineroCuenta());
+		return "comprar";
+	}
+	
 	@PostMapping("/comprarGallina")
 	public String comprarGallina(@RequestParam(value = "cant", defaultValue = "1") int cant) {
+	//public String comprarGallina() {
 		try {
 			iGallinaService.comprarGallina(cant);
 		} catch (SinDineroException | ProductoException e) {
 			e.printStackTrace();
 		}
-		return "redirect:/listar";
+		return "comprar";
 	}
 
 	@PostMapping("/comprarHuevo")

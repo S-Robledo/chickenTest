@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SegundoChickenTestApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SegundoChickenTestApplication.class, args);
+		SpringApplication.run(SegundoChickenTestApplication.class, args);		
 	}
 
 }

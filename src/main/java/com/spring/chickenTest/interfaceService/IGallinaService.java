@@ -1,7 +1,9 @@
 package com.spring.chickenTest.interfaceService;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.spring.chickenTest.modelo.Cuenta;
 import com.spring.chickenTest.modelo.ExceedsLimitException;
 import com.spring.chickenTest.modelo.Gallina;
 import com.spring.chickenTest.modelo.GallinaNotFoundException;
@@ -20,9 +22,15 @@ public interface IGallinaService {
  	public void crearHuevo(int cant) throws ProductoException;
  	
  	public void eliminarProducto(Gallina gallina); 	
+ 	public void eliminarGallina(Gallina gallina) throws GallinaNotFoundException;
+ 	
  	public void comprarGallina(int cant) throws SinDineroException, ProductoException; 	
  	public void comprarHuevo(int cant) throws SinDineroException, ProductoException;
  	public void venderGallina(int cant) throws GallinaNotFoundException;
  	public void venderHuevo(int cant) throws GallinaNotFoundException;
  	//pasar huevo a gallina 	
+ 	//public Optional<Gallina> convertirProducto(int id);
+ 	
+ 	
+ 	public void inicializarSaldo();
 }

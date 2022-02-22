@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+	crossorigin="anonymous">
+</head>
+<body>
+	<div class="container mt-4">
+		<div class="row">
+			<div class="col-sm-4"></div>
+			<div class="col-sm-6">
+				<form th:action="@{/comprarGallina}" th:objet=${Gallina}
+					method="POST">
+					<div>
+						<div class="col-xs-3">
+							<!-- <label for="Cantidad">Cantidad a Comprar:</label>  -->
+							<input type="text" id="cantidad" th:name="cant"
+								placeholder="cantidad a comprar" class="form-control"></input> <input
+								type="submit" value="Comprar Gallina" class="btn btn-success"></input>
+							<p th:text="'Cantidad de Gallinas: ' + ${totalGallinas}" />
+							<p th:text="'Dinero disponible: ' + ${dineroEnCuenta}" />
+							<a class="btn btn-primary btn-sm" th:href="@{/listar}" 
+								th:text="'Pagina anterior'" title="Volver a Listar"></a>
+							 
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="col-sm-2"></div>
+		</div>
+
+	</div>
+</body>
+</html>
