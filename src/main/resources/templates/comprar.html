@@ -12,26 +12,30 @@
 <body>
 	<div class="container mt-4">
 		<div class="row">
-			<div class="col-sm-4"></div>
-			<div class="col-sm-6">
-				<form th:action="@{/comprarGallina}" th:objet=${Gallina}
-					method="POST">
-					<div>
-						<div class="col-xs-3">
-							<!-- <label for="Cantidad">Cantidad a Comprar:</label>  -->
-							<input type="text" id="cantidad" th:name="cant"
-								placeholder="cantidad a comprar" class="form-control"></input> <input
-								type="submit" value="Comprar Gallina" class="btn btn-success"></input>
-							<p th:text="'Cantidad de Gallinas: ' + ${totalGallinas}" />
-							<p th:text="'Dinero disponible: ' + ${dineroEnCuenta}" />
-							<a class="btn btn-primary btn-sm" th:href="@{/listar}" 
-								th:text="'Pagina anterior'" title="Volver a Listar"></a>
-							 
+			<div class="col-sm-4">
+				<div class="col-sm-6">
+					<form th:action="@{/comprarGallina}" th:objet=${Gallina}
+						method="POST">
+						<div>
+							<div class="col-xs-2">
+								<!-- <label for="Cantidad">Cantidad a Comprar:</label>  -->
+								<p th:text="'Cantidad de Gallinas: ' + ${totalGallinas}" />
+								<p th:text="'Dinero disponible: ' + ${dineroEnCuenta}" />
+								<input type="text" id="cantidad" th:name="cant"
+									placeholder="cantidad a comprar" class="form-control"></input>
+								<input type="submit" value="Comprar Gallina"
+									class="btn btn-success"></input>
+
+
+							</div>
 						</div>
-					</div>
-				</form>
+					</form>
+					<a class="btn btn-primary btn-sm" th:href="@{/listar}"
+						th:text="'Pagina anterior'" title="Volver a Listar"></a>
+				</div>
 			</div>
-			<div class="col-sm-2"></div>
+			<div class="col-sm-2">
+			</div>
 		</div>
 
 	</div>

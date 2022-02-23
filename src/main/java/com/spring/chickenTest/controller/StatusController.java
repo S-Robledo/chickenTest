@@ -56,22 +56,14 @@ public class StatusController {
 		return "index";
 	}
 	
-	@GetMapping("/comprar")
-	public String comprar(Model model) {
-		model.addAttribute("totalGallinas", iGallinaService.listarGallinas().size()); 
-		model.addAttribute("dineroEnCuenta", iStatusService.plataEnCuenta(1).get().getDineroCuenta());
-		return "comprar";
-	}
-	
 	@PostMapping("/comprarGallina")
-	public String comprarGallina(@RequestParam(value = "cant", defaultValue = "1") int cant) {
-	//public String comprarGallina() {
+	public String comprarGallina(@RequestParam(value = "cant", defaultValue = "1") int cant, Model model) {
 		try {
 			iGallinaService.comprarGallina(cant);
 		} catch (SinDineroException | ProductoException e) {
 			e.printStackTrace();
-		}
-		return "comprar";
+		}	
+		return "redirect:/listar";
 	}
 
 	@PostMapping("/comprarHuevo")
@@ -108,5 +100,11 @@ public class StatusController {
 	public String pasarDeDia() {
 		iStatusService.pasarDeDia();
 		return "redirect:/listar";
+	}
+	
+	@GetMapping("/reporte")
+	public String reporte() {
+		
+		return "reporte";
 	}
 }

@@ -77,6 +77,7 @@ public class GallinaService implements IGallinaService {
 				Gallina g = new Gallina(false);
 				g.setCreacion(iStatusService.obtenerDia());
 				g.setPasarDia(iStatusService.obtenerDia());
+				g.setDinero(500);
 				Gallina gallina = iGallinaData.save(g);
 				if (gallina.equals(null)) {
 					throw new ProductoException("No se pudo crear Gallina");
@@ -104,6 +105,7 @@ public class GallinaService implements IGallinaService {
 				Gallina g = new Gallina(true);
 				g.setCreacion(iStatusService.obtenerDia());
 				g.setPasarDia(iStatusService.obtenerDia());
+				g.setDinero(15);
 				Gallina gallina = iGallinaData.save(g);
 				if (gallina.equals(null)) {
 					throw new ProductoException("No se pudo crear Huevo");
@@ -155,7 +157,7 @@ public class GallinaService implements IGallinaService {
 
 	@Override
 	public void comprarHuevo(int cant) throws ProductoException, SinDineroException {
-		int limite = 5;
+		int limite = 15;
 		if (iStatusService.plataEnCuenta(1).get().getDineroCuenta() >= 1100) {
 			if (this.listarHuevos().size() < limite && cant < limite) {
 				try {

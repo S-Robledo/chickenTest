@@ -20,150 +20,177 @@
 			<div class="col-sm-2  bg-light text-dark" th:align="center"
 				th:vertical-align>
 				<p th:text="${fecha}" />
+				<p th:text="${pasarDeDia}" />
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-sm-12">
-			<a class="btn btn-primary btn-sm" th:href="@{/comprar}" 
-				th:text="'Nuevo producto'" title="Crear nuevo producto"></a>
-			<!-- 
-				 
-				<form th:action="@{/comprar}" th:objet=${Gallina} method="POST">
-				<div>					 
-					 <input	type="submit" value="Comprar " class="btn btn-success">
-				</div>
-			</form> -->
-			</div>
-		</div>
-
-
-
-
-		<!-- <a th:href="@{/save}" custom:linkMethod="post">Comprar</a> -->
 		<div class="btn-group btn-group-lg" role="group" aria-label="...">
-
+			<div class="col-md-3">
+				<form th:action="@{/comprarGallina}" th:objet=${Gallina}
+				method="POST">
+					<div>
+					<input type="number" id="cantidad" th:name="cant"
+						placeholder="cantidad a comprar" class="form-control" min="0" max="20"></input> <input
+						type="submit" value="Comprar Gallina" class="btn btn-success"></input>
+					</div>
+				</form>
+			</div>
+			<div class="col-md-3">
 			<form th:action="@{/comprarHuevo}" th:objet=${Gallina} method="POST">
 				<div>
-					<input type="text" id="cantidad" th:name="cant"
-						placeholder="cantidad a comprar" class="form-control"></input> <input
+					<input type="number" id="cantidad" th:name="cant"
+						placeholder="cantidad a comprar" class="form-control" min="0" max="20"></input> <input
 						type="submit" value="Comprar Huevo" class="btn btn-success">
 				</div>
 			</form>
+			</div>
+			<div class="col-md-3">
 			<form th:action="@{/venderGallina}" th:objet=${Status} method="POST">
 				<div>
-					<input type="text" id="cantidad" th:name="cant"
-						placeholder="cantidad a vender" class="form-control"></input> <input
+					<input type="number" id="cantidad" th:name="cant"
+						placeholder="cantidad a vender" class="form-control" min="0" max="20"></input> <input
 						type="submit" value="Vender Gallina" class="btn btn-success">
 				</div>
 			</form>
-
+			</div>
+			<div class="col-md-3">
 			<form th:action="@{/venderHuevo}" th:objet=${Status} method="POST">
 				<div>
-					<input type="text" id="cantidad" th:name="cant"
-						placeholder="cantidad a vender" class="form-control"></input> <input
-						type="submit" value="Vender Huevos" class="btn btn-success">
+					<input type="number" id="cantidad" th:name="cant"
+						placeholder="cantidad a vender" class="form-control" min="0" max="20"></input> <input
+						type="submit" value="Vender Huevo" class="btn btn-success">
 				</div>
 			</form>
-
+			</div>
+			<div class="col-md-3">
 			<form th:action="@{/pasarDeDia}" th:objet=${Gallina} method="GET">
 				<div>
 					<input type="submit" value="Pasar de Dia" class="btn btn-success">
 				</div>
+				 
+				<h6>dia:</h6>
+				<p th:text="${pasarDeDia}" />
+			 
 			</form>
-
-
-
+			</div>
+			<div class="col-md-3">
+			<form th:action="@{/reporte}" th:objet=${Gallina} method="GET">
+				<div>
+					<input type="submit" value="Reporte" class="btn btn-success">
+				</div>
+				<div>
+				 
+				</div>
+			</form>
+			</div>
 		</div>
-
 		<br>
+
+
+		<div>		
+				
+				
+			</div>
+		
+
+			<div>
 
 		<div class="row">
-			<div class="col"></div>
 			<div class="col">
-				<p th:text="'El total de la granja es: '" class="form-control" />
-				<label th:text="${totalGranja}" class="form-control" /></label>
+				<h6>El total de la granja:</h6>
+				<label th:text="${totalGranja}" class="form-control" readonly></label> 
 			</div>
 			<div class="col">
-				<input type="text" id="cantidad" th:name="${totalGranja}"
-					class="form-control" readonly></input>
+				<!-- <input type="text" id="cantidad" th:name="${totalGranja}"
+					class="form-control" readonly></input> -->
+				<!-- <p th:text="'Cantidad de Gallinas: ' + ${totalGallinas}" /> -->
+				<h6>Total de gallinas:</h6>
+				<label th:text="${totalGallinas}" class="form-control" readonly></label>
+			</div>
+			<div class="col">
+				<h6>Total huevos:</h6>
+				<label th:text="${totalHuevos}" class="form-control" readonly></label>
+			
+			</div>
+			<div class="col">
+				<h6>Dinero disponible:</h6>
+				<label th:text="${dineroEnCuenta}" class="form-control" readonly></label>			
+			</div>
+			<div class="col">
+				<h6> </h6>
+				 		
 			</div>
 		</div>
 
-		<div>
 
+<!-- 			 	<br>
+				<p th:text="'Cantidad de Huevos: ' + ${totalHuevos}" />
+				<br>
+				<p th:text="'Dinero disponible: ' + ${dineroEnCuenta}" />
+				<br>
+				<p th:text="'dia: ' + ${pasarDeDia}" /> -->
 
+			</div>
 
+			<table class="table">
+				<thead>
+					<tr>
+						<th>ID</th>
+					<!-- 	<th>CREACION</th> -->
+						<th>COSTO</th>
+						<th>TIPO</th>
+						<th>DIA DE VIDA</th> 
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="gallina:${gallinas}">
+						<td th:text="${gallina.idGallina}"></td>
+					<!-- 	<td th:text="${gallina.creacion}"></td> -->
+						<td th:text="${gallina.dinero}"></td>
+						<td>
+							<!-- CONDICION -->
+							<div th:if="${gallina.isHuevo}">
+								<span>Huevo</span>
+							</div> <!-- ELSE -->
+							<div th:unless="${gallina.isHuevo}">
+								<span>Gallina</span>
+							</div>
+						</td>
+					    <td th:text="${gallina.pasarDia - gallina.creacion}"></td>
+					</tr>
 
-			<p th:text="'Cantidad de Gallinas: ' + ${totalGallinas}" />
+				</tbody>
+			</table>
 			<br>
-			<p th:text="'Cantidad de Huevos: ' + ${totalHuevos}" />
-			<br>
-			<p th:text="'Dinero disponible: ' + ${dineroEnCuenta}" />
-			<br>
-			<p th:text="'dia: ' + ${pasarDeDia}" />
+			<table class="table">
+				<thead>
+					<tr>
+						<th>ID</th>
+					<!-- 	<th>CREACION</th> -->
+						<th>COSTO</th>
+						<th>TIPO</th>
+						<th>DIA DE VIDA</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="gallina:${huevos}">
+						<td th:text="${gallina.idGallina}"></td>
+					<!-- 	<td th:text="${gallina.creacion}"></td> -->
+						<td th:text="${gallina.dinero}"></td>
+						<td>
+							<!-- CONDICION -->
+							<div th:if="${gallina.isHuevo}">
+								<span>Huevo</span>
+							</div> <!-- ELSE -->
+							<div th:unless="${gallina.isHuevo}">
+								<span>Gallina</span>
+							</div>
+						</td>
+						<td th:text="${gallina.pasarDia - gallina.creacion}"></td>
 
+					</tr>
+
+				</tbody>
+			</table>
 		</div>
-
-		<table class="table">
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>CREACION</th>
-					<th>PRECIO</th>
-					<th>TIPO</th>
-					<th>PASARDIA</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="gallina:${gallinas}">
-					<td th:text="${gallina.idGallina}"></td>
-					<td th:text="${gallina.creacion}"></td>
-					<td th:text="${gallina.dinero}"></td>
-					<td>
-						<!-- CONDICION -->
-						<div th:if="${gallina.isHuevo}">
-							<span>Huevo</span>
-						</div> <!-- ELSE -->
-						<div th:unless="${gallina.isHuevo}">
-							<span>Gallina</span>
-						</div>
-					</td>
-					<td th:text="${gallina.pasarDia}"></td>
-				</tr>
-
-			</tbody>
-		</table>
-		<br>
-		<table class="table">
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>CREACION</th>
-					<th>PRECIO</th>
-					<th>TIPO</th>
-					<th>PASARDIA</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="gallina:${huevos}">
-					<td th:text="${gallina.idGallina}"></td>
-					<td th:text="${gallina.creacion}"></td>
-					<td th:text="${gallina.dinero}"></td>
-					<td>
-						<!-- CONDICION -->
-						<div th:if="${gallina.isHuevo}">
-							<span>Huevo</span>
-						</div> <!-- ELSE -->
-						<div th:unless="${gallina.isHuevo}">
-							<span>Gallina</span>
-						</div>
-					</td>
-					<td th:text="${gallina.pasarDia}"></td>
-
-				</tr>
-
-			</tbody>
-		</table>
-	</div>
 </body>
 </html>

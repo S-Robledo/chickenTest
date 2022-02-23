@@ -1,7 +1,5 @@
 package com.spring.chickenTest.modelo;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -10,9 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "gallina3")
+@Table(name = "gallina")
 public class Gallina {
 
 		@Id
@@ -32,8 +32,11 @@ public class Gallina {
 		
 		@Column(name = "PASAR_DIA")
 		private int pasarDia;
-		//private Date fechaCreacion;
-		//private Date pasarDeDia;
+		
+		@Temporal(TemporalType.TIMESTAMP)
+		private Date fechaCreacion;
+		
+		private Date pasarDeDia;
 		
 		//constructor
 		public Gallina() {
@@ -41,9 +44,9 @@ public class Gallina {
 		}
 		public Gallina(boolean b) {
 			this.isHuevo = b;
-			this.dinero = 100;
-			//this.fechaCreacion = new Date();
-			//this.pasarDeDia = java.sql.Date.valueOf(LocalDate.now());
+			this.dinero = 0;
+			this.fechaCreacion = new Date();
+			this.pasarDeDia = null;
 			this.creacion=0;
 			this.pasarDia=0;
 		}
@@ -81,11 +84,17 @@ public class Gallina {
 			this.pasarDia = pasarDia;
 		}
 		//adjuntar fecha creacion
-//		public Date getFechaCreacion() {
-//			return fechaCreacion;
-//		}
-//		public void setFechaCreacion(Date fechaCreacion) {
-//			this.fechaCreacion = fechaCreacion;
-//		}
+ 		public Date getFechaCreacion() {
+ 			return fechaCreacion;
+ 		}
+ 		public void setFechaCreacion(Date fechaCreacion) {
+ 			this.fechaCreacion = fechaCreacion;
+ 		}
 						
+ 		public Date getPasarDeDia() {
+ 			return pasarDeDia;
+ 		}
+ 		public void setPasarDeDia(Date pasarDeDia) {
+ 			this.pasarDeDia = pasarDeDia;
+ 		}
 }

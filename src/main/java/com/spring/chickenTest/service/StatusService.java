@@ -1,5 +1,8 @@
 package com.spring.chickenTest.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,14 +70,21 @@ public class StatusService implements IStatusService {
 	@Override
 	public void pasarDeDia() {
 		List<Gallina> listaCompleta = (List<Gallina>) iGallinaData.findAll();
-		int dia = 0;
+		int dia = 0; 
+		Date fecha = new Date();
+		
 		for (Gallina gallina : listaCompleta) {
 			dia = gallina.getPasarDia() + 1;
+			fecha = gallina.getFechaCreacion();
+			Date mañana = new Date(fecha.getTime() + (1000 * 60 * 60 * 24));
+			gallina.setPasarDeDia(mañana);
 			gallina.setPasarDia(dia);
 			if ((gallina.getPasarDia() - gallina.getCreacion()) >= 5) {
 				if (gallina.isHuevo()) {
 					gallina.setHuevo(false);
 					gallina.setCreacion(dia);
+					gallina.setDinero(500);
+					gallina.setFechaCreacion(mañana);
 				}
 			}
 			iGallinaData.save(gallina);
@@ -92,13 +102,18 @@ public class StatusService implements IStatusService {
 	}
 
 	@Override
+	//public Date obtenerDia() {
 	public int obtenerDia() {
 		int dia = 0;
+		Date fecha = new Date();
 		List<Gallina> listaCompleta = (List<Gallina>) iGallinaData.findAll();
 		for (Gallina gallina : listaCompleta) {
 			dia = gallina.getPasarDia();
+			fecha = gallina.getPasarDeDia();
+			//return fecha;
 			return dia;
 		}
+		//return fecha;
 		return dia;
 	}
 
