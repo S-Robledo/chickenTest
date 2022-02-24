@@ -20,6 +20,8 @@
 			<div class="col-sm-2  bg-light text-dark" th:align="center"
 				th:vertical-align>
 				<p th:text="${fecha}" />
+				<h7>Dia: </h7>
+				
 				<p th:text="${pasarDeDia}" />
 			</div>
 		</div>
@@ -65,11 +67,7 @@
 			<form th:action="@{/pasarDeDia}" th:objet=${Gallina} method="GET">
 				<div>
 					<input type="submit" value="Pasar de Dia" class="btn btn-success">
-				</div>
-				 
-				<h6>dia:</h6>
-				<p th:text="${pasarDeDia}" />
-			 
+				</div>		
 			</form>
 			</div>
 			<div class="col-md-3">
@@ -84,7 +82,9 @@
 			</div>
 		</div>
 		<br>
-
+		<div>
+		<br>
+		</div>
 
 		<div>		
 				

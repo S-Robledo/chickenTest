@@ -14,23 +14,19 @@ public interface IGallinaService {
 
 	public List<Gallina> listarProductos();
 	public List<Gallina> listarGallinas();
-	public List<Gallina> listarHuevos();
- 	
- 	//cambiar crearProducto por crearGallina y crearHuevo  
-	//public void crearProducto(Gallina g) throws ProductoException;
+	public List<Gallina> listarHuevos(); 	
  	public void crearGallina(int cant) throws ProductoException, SinDineroException;
- 	public void crearHuevo(int cant) throws ProductoException;
+ 	public void crearHuevo(int cant) throws ProductoException; 	
+ 	
+ 	
+ 	public void crearProducto(boolean esGallina, int cant) throws ProductoException;
+ 	
  	
  	public void eliminarProducto(Gallina gallina); 	
- 	public void eliminarGallina(Gallina gallina) throws GallinaNotFoundException;
- 	
+ 	public void eliminarGallina(Gallina gallina) throws GallinaNotFoundException; 	
  	public void comprarGallina(int cant) throws SinDineroException, ProductoException; 	
  	public void comprarHuevo(int cant) throws SinDineroException, ProductoException;
- 	public void venderGallina(int cant) throws GallinaNotFoundException;
- 	public void venderHuevo(int cant) throws GallinaNotFoundException;
- 	//pasar huevo a gallina 	
- 	//public Optional<Gallina> convertirProducto(int id);
+ 	public void venderGallina(int cant) throws GallinaNotFoundException, SinDineroException;
+ 	public void venderHuevo(int cant) throws GallinaNotFoundException, SinDineroException;
  	
- 	
- 	public void inicializarSaldo();
 }

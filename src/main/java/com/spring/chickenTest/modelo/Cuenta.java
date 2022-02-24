@@ -11,6 +11,10 @@ public class Cuenta {
 	@Id
 	private int idCuenta;
 	private double dineroCuenta;
+	private int gallinasVendidas;
+	private int huevosVendidos;
+	private double precioGallina;
+	private double precioHuevo;
 
 	public Cuenta() {
 		
@@ -42,20 +46,37 @@ public class Cuenta {
 		}
 	}
 
-	//crear metodo get cuenta
-	
-	
+	public int getGallinasVendidas() {
+		return gallinasVendidas;
+	}
 
-//	public void venderGallina() throws SinDineroException {
-//		this.setDineroCuenta(this.getDineroCuenta() + 100);
-//	}
-//
-//	public void comprarHuevo() throws SinDineroException {
-//		this.setDineroCuenta(this.getDineroCuenta() - 30);
-//	}
-//
-//	public void venderHuevo() throws SinDineroException {
-//		this.setDineroCuenta(this.getDineroCuenta() + 80);
-//	}
+	public void setGallinasVendidas(int gallinasVendidas) {
+		this.gallinasVendidas = gallinasVendidas;
+	}
+
+	public int getHuevosVendidos() {
+		return huevosVendidos;
+	}
+
+	public void setHuevosVendidos(int huevosVendidos) {
+		this.huevosVendidos = huevosVendidos;
+	}
+
+	public double getPrecioGallina() {
+		return precioGallina;
+	}
+
+	public void setPrecioGallina(double precioGallina) {
+		this.precioGallina = precioGallina;
+	}
+
+	public double getPrecioHuevo() {
+		return precioHuevo;
+	}
+
+	public void setPrecioHuevo(double precioHuevo) {
+		this.precioHuevo = precioHuevo;
+	}
+
 
 }

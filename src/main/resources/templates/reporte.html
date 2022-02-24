@@ -8,7 +8,75 @@ integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jI
 crossorigin="anonymous">
 </head>
 <body>
-<h2>reporte</h2>
+
+
+<div class="container mt-4">
+	<h4>Informe de estado de la Granja</h4>
+
+	<div class="row">
+  		<div class="col-md-9">
+  		
+  		<div class="row">
+			<div class="col">
+				<h6>Total de productos de la Granja:</h6>
+				<label th:text="${totalGranja}" class="form-control" readonly></label> 
+			</div>
+			<div class="col">
+				<h6>Dinero disponible:</h6>
+				<label th:text="${dineroEnCuenta}" class="form-control" readonly></label>			
+			</div>
+			
+			
+  		</div>
+  		
+   			 <h5>Costo de los Productos </h5>
+	 		<table class="table">
+				<thead>
+					<tr>
+						<th>TIPO</th>
+						<th>COSTO UNITARIO</th>
+						<th>CANTIDAD</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td th:text="Gallina"></td>
+						<td th:text="${costoUnitarioGallina}"></td>
+					    <td th:text="${totalGallinas}"></td>
+					</tr>
+					<tr>
+						<td th:text="Huevo"></td>
+						<td th:text="15"></td>
+					    <td th:text="${totalHuevos}"></td>
+					</tr>
+				</tbody>
+			</table>
+			<br>
+				 <h5>Ventas</h5>
+	 		<table class="table">
+				<thead>
+					<tr>
+						<th>TIPO</th>
+						<th>CANTIDAD</th>
+						<th>TOTAL GASTADO</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr >
+						<td th:text="Gallina"></td>
+						<td th:text="${gallinasVendidas}"></td>
+					    <td th:text="${totalGastadoGallinas}"></td>
+					</tr>
+					<tr>
+						<td th:text="Huevo"></td>
+						<td th:text="${huevosVendidos}"></td>
+					    <td th:text="${totalGastadoHuevos}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
 	 
 </body>
 </html>
