@@ -3,6 +3,8 @@ package com.spring.chickenTest.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +19,7 @@ import com.spring.chickenTest.modelo.Gallina;
 import com.spring.chickenTest.modelo.GallinaNotFoundException;
 import com.spring.chickenTest.modelo.ProductoException;
 import com.spring.chickenTest.modelo.SinDineroException;
+import com.spring.chickenTest.service.GallinaService;
 
 @Controller
 @RequestMapping
@@ -27,44 +30,49 @@ public class StatusController {
 	@Autowired
 	private IStatusService iStatusService;
 
+	@Autowired
+	public GallinaService gallinaService;
+
 	private boolean inicio = true;
 
 	@GetMapping("/listar")
 	public String listar(Model model) {
 		if (inicio) {
-			iStatusService.inicializarCuenta(); //revisado
+			iStatusService.inicializarCuenta(); 
 			inicio = false;
 		}
-		List<Gallina> totalGallinas = iGallinaService.listarProductos(); //revisado
-		List<Gallina> gallinas = iGallinaService.listarGallinas(); //revisado
-		List<Gallina> huevos = iGallinaService.listarHuevos();  //revisado
-
+		List<Gallina> totalGallinas = iGallinaService.listarProductos();  
+		List<Gallina> gallinas = iGallinaService.listarGallinas();  
+		List<Gallina> huevos = iGallinaService.listarHuevos();  
 		model.addAttribute("gallinas", gallinas);
 		model.addAttribute("huevos", huevos);
 		model.addAttribute("fecha", LocalDate.now());
-		model.addAttribute("totalGranja", iGallinaService.listarProductos().size()); //ok
-		model.addAttribute("totalGallinas", iGallinaService.listarGallinas().size()); //ok
-		model.addAttribute("totalHuevos", iGallinaService.listarHuevos().size()); //ok
-		model.addAttribute("dineroEnCuenta", iStatusService.plataEnCuenta(1).get().getDineroCuenta()); // revisado
-		model.addAttribute("pasarDeDia", iStatusService.obtenerDia()); //ok
+		model.addAttribute("totalGranja", iGallinaService.listarProductos().size()); 
+		model.addAttribute("totalGallinas", iGallinaService.listarGallinas().size());  
+		model.addAttribute("totalHuevos", iGallinaService.listarHuevos().size());  
+		model.addAttribute("dineroEnCuenta", iStatusService.plataEnCuenta(1).get().getDineroCuenta());  
+		model.addAttribute("pasarDeDia", iStatusService.obtenerDia());  
 
 		return "index";
 	}
-	//revisado
+
+	 
 	@PostMapping("/comprarGallina")
 	public String comprarGallina(@RequestParam(value = "cant", defaultValue = "1") int cant) {
-		
+		// model poner mensaje model.addAttribute("pasarDeDia", e.getMessage());
 		try {
 			iGallinaService.comprarGallina(cant);
 		} catch (SinDineroException | ProductoException e) {
+			e.getMessage();
 			e.printStackTrace();
 		}
 		return "redirect:/listar";
 	}
-	//Revisado
+
+ 
 	@PostMapping("/comprarHuevo")
 	public String comprarHuevo(@RequestParam(value = "cant", defaultValue = "1") int cant) {
-		
+
 		try {
 			iGallinaService.comprarHuevo(cant);
 		} catch (SinDineroException | ProductoException e) {
@@ -96,29 +104,38 @@ public class StatusController {
 	@GetMapping("/pasarDeDia")
 	public String pasarDeDia() {
 		iStatusService.pasarAotroDia();
-		//iStatusService.pasarDeDia();
+		// iStatusService.pasarDeDia();
 		return "redirect:/listar";
 	}
 
 	@GetMapping("/reporte")
 	public String reporte(Model model) {
-//		List<Gallina> totalProductos = iGallinaService.listarProductos();
-//		model.addAttribute("totalProductos", totalProductos);
-		// model.addAttribute("totalProductos",
-		// iGallinaService.listarProductos().size());
-
-		model.addAttribute("totalGranja", iGallinaService.listarProductos().size());
-		model.addAttribute("dineroEnCuenta", iStatusService.plataEnCuenta(1).get().getDineroCuenta());
-		model.addAttribute("totalGallinas", iGallinaService.listarGallinas().size());
-		model.addAttribute("totalHuevos", iGallinaService.listarHuevos().size());
-		// obtener de cuenta datos
-		model.addAttribute("gallinasVendidas", iStatusService.plataEnCuenta(1).get().getGallinasVendidas());
-		model.addAttribute("totalGastadoGallinas", (iStatusService.plataEnCuenta(1).get().getGallinasVendidas() * 500));
-
-		model.addAttribute("huevosVendidos", iStatusService.plataEnCuenta(1).get().getHuevosVendidos());
-		model.addAttribute("totalGastadoHuevos", (iStatusService.plataEnCuenta(1).get().getHuevosVendidos() * 15));
-
-		model.addAttribute("costoUnitarioGallina", iStatusService.plataEnCuenta(1).get().getPrecioGallina());
+		try {
+			model.addAttribute("totalGranja", iGallinaService.listarProductos().size());
+			model.addAttribute("dineroEnCuenta", iStatusService.plataEnCuenta(1).get().getDineroCuenta());
+			
+			model.addAttribute("costoUnitarioGallina", gallinaService.getPRECIO_GALLINA());
+			model.addAttribute("totalCantGallinas", iGallinaService.listarGallinas().size());
+			model.addAttribute("costoUnitarioHuevo", gallinaService.getPRECIO_HUEVO());			
+			model.addAttribute("totalCantHuevos", iGallinaService.listarHuevos().size());			
+		 
+			model.addAttribute("gallinasVendidas", iStatusService.plataEnCuenta(1).get().getGallinasVendidas());
+			model.addAttribute("totalVentaGallinas",
+					(iStatusService.plataEnCuenta(1).get().getGallinasVendidas() * gallinaService.getPRECIO_GALLINA()));
+			model.addAttribute("huevosVendidos", iStatusService.plataEnCuenta(1).get().getHuevosVendidos());
+			model.addAttribute("totalVentaHuevos",
+					(iStatusService.plataEnCuenta(1).get().getHuevosVendidos() * gallinaService.getPRECIO_HUEVO()));			
+	 
+			model.addAttribute("gallinasCompra", iStatusService.plataEnCuenta(1).get().getGallinasCompra());
+			model.addAttribute("huevosCompra", iStatusService.plataEnCuenta(1).get().getHuevosCompra());
+			model.addAttribute("totalCompraGallinas",
+					(iStatusService.plataEnCuenta(1).get().getGallinasCompra() * gallinaService.getPRECIO_GALLINA()));
+			model.addAttribute("totalCompraHuevos",
+					(iStatusService.plataEnCuenta(1).get().getHuevosCompra() * gallinaService.getPRECIO_HUEVO()));			
+			
+		} catch(RuntimeException e) {
+			e.printStackTrace();
+		}
 		return "reporte";
 	}
 }
