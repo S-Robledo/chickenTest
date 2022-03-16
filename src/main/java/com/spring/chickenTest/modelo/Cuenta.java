@@ -22,6 +22,8 @@ public class Cuenta {
 	private int huevosCompra;
 	private double precioGallina;
 	private double precioHuevo;
+	private int gallinaNacimiento;
+	private int gallinaMuerte;
 
 	public Cuenta() {
 
@@ -112,4 +114,22 @@ public class Cuenta {
 	public void setPrecioHuevo(double precioHuevo) {
 		this.precioHuevo = precioHuevo;
 	}
+
+	public int getGallinaNacimiento() {
+		return gallinaNacimiento;
+	}
+
+	public void setGallinaNacimiento(int gallinaNacimiento) {
+		this.gallinaNacimiento = gallinaNacimiento;
+	}
+
+	public int getGallinaMuerte() {
+		return gallinaMuerte;
+	}
+
+	public void setGallinaMuerte(int gallinaMuerte) {
+		this.gallinaMuerte = gallinaMuerte;
+	}
+	
+	
 }

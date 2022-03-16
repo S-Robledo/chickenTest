@@ -56,10 +56,10 @@ public class StatusController {
 			inicio = false;
 		}
 		List<Gallina> totalGallinas = iGallinaService.listarProductos();
-		List<Gallina> gallinas = iGallinaService.listarGallinas();
-		List<Gallina> huevos = iGallinaService.listarHuevos();
-		model.addAttribute("gallinas", gallinas);
-		model.addAttribute("huevos", huevos);
+//		List<Gallina> gallinas = iGallinaService.listarGallinas();
+//		List<Gallina> huevos = iGallinaService.listarHuevos();
+//		model.addAttribute("gallinas", gallinas);
+//		model.addAttribute("huevos", huevos);
 		model.addAttribute("fecha", LocalDate.now());
 		model.addAttribute("totalGranja", iGallinaService.listarProductos().size());
 		model.addAttribute("totalGallinas", iGallinaService.listarGallinas().size());
@@ -175,10 +175,10 @@ public class StatusController {
 
 			model.addAttribute("gallinasVendidas", iStatusService.plataEnCuenta(1).get().getGallinasVendidas());
 			model.addAttribute("totalVentaGallinas",
-					(iStatusService.plataEnCuenta(1).get().getGallinasVendidas() * gallinaService.getPRECIO_GALLINA()));
+					(iStatusService.plataEnCuenta(1).get().getGallinasVendidas() * iStatusService.plataEnCuenta(1).get().getPrecioGallina()));
 			model.addAttribute("huevosVendidos", iStatusService.plataEnCuenta(1).get().getHuevosVendidos());
 			model.addAttribute("totalVentaHuevos",
-					(iStatusService.plataEnCuenta(1).get().getHuevosVendidos() * gallinaService.getPRECIO_HUEVO()));
+					(iStatusService.plataEnCuenta(1).get().getHuevosVendidos() * iStatusService.plataEnCuenta(1).get().getPrecioHuevo()));
 
 			model.addAttribute("gallinasCompra", iStatusService.plataEnCuenta(1).get().getGallinasCompra());
 			model.addAttribute("huevosCompra", iStatusService.plataEnCuenta(1).get().getHuevosCompra());
@@ -188,8 +188,8 @@ public class StatusController {
 					(iStatusService.plataEnCuenta(1).get().getHuevosCompra() * gallinaService.getPRECIO_HUEVO()));
 			
 			//natimiento gallinas muerte gallinas
-			model.addAttribute("totalNacimientoGallinas", "24" );
-			model.addAttribute("totalMuerteGallinas", "2");
+			model.addAttribute("totalNacimientoGallinas", iStatusService.plataEnCuenta(1).get().getGallinaNacimiento());
+			model.addAttribute("totalMuerteGallinas", iStatusService.plataEnCuenta(1).get().getGallinaMuerte());
 			
 		} catch (RuntimeException e) {
 			e.printStackTrace();

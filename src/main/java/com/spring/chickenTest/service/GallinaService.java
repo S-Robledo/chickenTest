@@ -34,11 +34,15 @@ public class GallinaService implements IGallinaService {
 
 	private final double PRECIO_HUEVO = 20;
 
-	private final double MAXIMO_EN_CUENTA = 7000;// sugiere 100000
+	private final double MAXIMO_EN_CUENTA = 100000;// sugiere 100000
 
-	private final int LIMITE_CANT_COMPRA = 50;
+	private final int LIMITE_CANT_COMPRA = 30000;
 
 	private final int LIMITE_CANT_VENTA = 2;
+	
+	private final double GANANCIA_GALLINA = 1.30;
+	
+	private final double GANANCIA_HUEVO = 1.30;
 
 	public double getPRECIO_GALLINA() {
 		return PRECIO_GALLINA;
@@ -124,15 +128,16 @@ public class GallinaService implements IGallinaService {
 		Cuenta cuenta = iStatusService.plataEnCuenta(1).get();
 		double dineroCuenta = 0;
 		if (!gallina.isHuevo()) {
-			cuenta.setPrecioGallina(gallina.getDinero());
+			cuenta.setPrecioGallina(gallina.getDinero() * GANANCIA_GALLINA);
 			dineroCuenta = gallina.getDinero();
 			cuenta.setGallinasVendidas(cuenta.getGallinasVendidas() + 1);
 		} else {
-			cuenta.setPrecioHuevo(gallina.getDinero());
+			cuenta.setPrecioHuevo(gallina.getDinero() * GANANCIA_HUEVO);
 			dineroCuenta = gallina.getDinero();
 			cuenta.setHuevosVendidos(cuenta.getHuevosVendidos() + 1);
 		}
 		if (!(iStatusService.plataEnCuenta(1).get().getDineroCuenta() + dineroCuenta > MAXIMO_EN_CUENTA)) {
+			System.out.println(iStatusService.plataEnCuenta(1).get().getDineroCuenta() + dineroCuenta);
 			cuenta.setDineroCuenta(dineroCuenta);
 			iCuentaData.save(cuenta);
 			iGallinaData.deleteById(gallina.getIdGallina());
