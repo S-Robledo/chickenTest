@@ -8,6 +8,7 @@
 	rel="stylesheet"
 	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
 	crossorigin="anonymous">
+<link rel="stylesheet" href="" th:href="@{/css/style.css}">
 </head>
 <body>
 	<div class="container mt-4">
@@ -19,102 +20,106 @@
 			<div class="col-sm-6"></div>
 			<div class="col-sm-2  bg-light text-dark" th:align="center"
 				th:vertical-align>
-				<p th:text="${fecha}" />
+				<!-- <p th:text="${fecha}" /> -->
 				<h7>Dia: </h7>
 				<p th:text="${pasarDeDia}" />
 			</div>
 		</div>
+		<div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)"
+			th:if="${mensaje != null}" th:text="${mensaje}"
+			class="alert alert-dismissible fade show" role="alert">
+			<button type="button" class="btn-close" data-bs-dismiss="alert"
+				aria-label="Close"></button>
+		</div>
 		<div class="btn-group btn-group-lg" role="group" aria-label="...">
 			<div class="col-md-3">
-				<form th:action="@{/comprarGallina}" th:objet=${Gallina}
+				<form th:action="@{/comprarGallina}" th:objet=${Cuenta}
 					method="POST">
-					<div>
+					<div class="d-grid gap-2">
 						<input type="number" id="cantidad" th:name="cant"
-							placeholder="cantidad a comprar" class="form-control" min="0"
-							max="20"></input> <input type="submit" value="Comprar Gallina"
-							class="btn btn-success"></input>
+							placeholder="cantidad a comprar" class="form-control"></input> <input
+							type="submit" value="Comprar Gallina" class="btn btn-success"></input>
 					</div>
 				</form>
 			</div>
 			<div class="col-md-3">
 				<form th:action="@{/comprarHuevo}" th:objet=${Gallina} method="POST">
-					<div>
+					<div class="d-grid gap-2">
 						<input type="number" id="cantidad" th:name="cant"
-							placeholder="cantidad a comprar" class="form-control" min="0"
-							max="20"></input> <input type="submit" value="Comprar Huevo"
-							class="btn btn-success">
+							placeholder="cantidad a comprar" class="form-control"></input> <input
+							type="submit" value="Comprar Huevo" class="btn btn-success">
 					</div>
 				</form>
 			</div>
 			<div class="col-md-3">
 				<form th:action="@{/venderGallina}" th:objet=${Status} method="POST">
-					<div>
-						<input type="number" id="cantidad" th:name="cant"
-							placeholder="cantidad a vender" class="form-control" min="0"
-							max="20"></input> <input type="submit" value="Vender Gallina"
-							class="btn btn-success">
+					<div class="d-grid gap-2">
+						<input type="number" id="cantidadInput" th:name="cant"
+							placeholder="cantidad a vender" class="form-control"></input> <input
+							type="submit" value="Vender Gallina" class="btn btn-success">
 					</div>
 				</form>
 			</div>
 			<div class="col-md-3">
 				<form th:action="@{/venderHuevo}" th:objet=${Status} method="POST">
-					<div>
+					<div class="d-grid gap-2">
 						<input type="number" id="cantidad" th:name="cant"
-							placeholder="cantidad a vender" class="form-control" min="0"
-							max="20"></input> <input type="submit" value="Vender Huevo"
-							class="btn btn-success">
+							placeholder="cantidad a vender" class="form-control"></input> <input
+							type="submit" value="Vender Huevo" class="btn btn-success">
 					</div>
 				</form>
 			</div>
 			<div class="col-md-3">
 				<form th:action="@{/pasarDeDia}" th:objet=${Gallina} method="GET">
-					<div>
+					<div class="d-grid gap-2">
 						<input type="submit" value="Pasar de Dia" class="btn btn-success">
 					</div>
 				</form>
-			</div>
-			<div class="col-md-3">
 				<form th:action="@{/reporte}" th:objet=${Gallina} method="GET">
-					<div>
-						<input type="submit" value="Reporte" class="btn btn-success">
+					<div class="d-grid gap-2">
+						<input type="submit" value=" Reporte " class="btn btn-success">
 					</div>
-					<div></div>
 				</form>
 			</div>
-		</div>		
+		</div>
 		<div>
 			<br>
 			<br>
 		</div>
-
-		<div></div>
-
 		<div>
 			<div class="row">
 				<div class="col">
-					<h6>El total de la granja:</h6>
+					<!-- <h6>El total de la granja:</h6> -->
+					<div class="shadow p-3 mb-5 bg-body rounded">El total de la granja:
 					<label th:text="${totalGranja}" class="form-control" readonly></label>
+					</div>
 				</div>
-				<div class="col">				
-					<h6>Total de gallinas:</h6>
+				<div class="col">
+					<!-- <h6>Total de gallinas:</h6> -->
+					<div class="shadow p-3 mb-5 bg-body rounded">Total de gallinas:
 					<label th:text="${totalGallinas}" class="form-control" readonly></label>
+					</div>
 				</div>
 				<div class="col">
-					<h6>Total huevos:</h6>
+					<!-- <h6>Total de huevos:</h6> -->
+					<div class="shadow p-3 mb-5 bg-body rounded">Total de huevos:
 					<label th:text="${totalHuevos}" class="form-control" readonly></label>
+					</div>
 				</div>
 				<div class="col">
-					<h6>Dinero disponible:</h6>
+					<!-- <h6>Dinero disponible:</h6> -->
+					<div class="shadow p-3 mb-5 bg-body rounded"> 
+					<span style="font-weight:bold">Dinero disponible:</span>
+					
 					<label th:text="${dineroEnCuenta}" class="form-control" readonly></label>
+					</div>
 				</div>
 				<div class="col">
 					<h6></h6>
 				</div>
 			</div>
-
 		</div>
-
-		<table class="table">
+		<!-- 		<table class="table">
 			<thead>
 				<tr>
 					<th>ID</th>	
@@ -126,13 +131,13 @@
 			<tbody>
 				<tr th:each="gallina:${gallinas}">
 					<td th:text="${gallina.idGallina}"></td>
-					<!-- 	<td th:text="${gallina.creacion}"></td> -->
+						<td th:text="${gallina.creacion}"></td>
 					<td th:text="${gallina.dinero}"></td>
 					<td>
-						<!-- CONDICION -->
+						CONDICION
 						<div th:if="${gallina.isHuevo}">
 							<span>Huevo</span>
-						</div> <!-- ELSE -->
+						</div> ELSE
 						<div th:unless="${gallina.isHuevo}">
 							<span>Gallina</span>
 						</div>
@@ -140,9 +145,9 @@
 					<td th:text="${gallina.pasarDia - gallina.creacion}"></td>
 				</tr>
 			</tbody>
-		</table>
+		</table> -->
 		<br>
-		<table class="table">
+		<!-- <table class="table">
 			<thead>
 				<tr>
 					<th>ID</th>
@@ -156,10 +161,10 @@
 					<td th:text="${gallina.idGallina}"></td>
 					<td th:text="${gallina.dinero}"></td>
 					<td>
-						<!-- CONDICION -->
+						CONDICION
 						<div th:if="${gallina.isHuevo}">
 							<span>Huevo</span>
-						</div> <!-- ELSE -->
+						</div> ELSE
 						<div th:unless="${gallina.isHuevo}">
 							<span>Gallina</span>
 						</div>
@@ -167,7 +172,16 @@
 					<td th:text="${gallina.pasarDia - gallina.creacion}"></td>
 				</tr>
 			</tbody>
-		</table>
+		</table> -->
 	</div>
+	<script src="https://code.jquery.com/jquery-3.6.0.js"
+		integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+		crossorigin="anonymous"></script>
+	<!-- Option 1: Bootstrap Bundle with Popper -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+		crossorigin="anonymous"></script>
+	<script src="" th:src="@{js/myjs.js}"></script>
 </body>
 </html>

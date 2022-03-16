@@ -14,8 +14,8 @@ public interface IGallinaService {
 	public List<Gallina> listarHuevos(); 	
  	public void crearGallina(int cant) throws ProductoException, SinDineroException;
  	public void crearHuevo(int cant) throws ProductoException, SinDineroException; 		 	
- 	public void crearProducto(boolean esGallina, int cant) throws ProductoException; 	
- 	public void eliminarProducto(Gallina gallina); 	
+ 	public void crearProducto(boolean esGallina, int cant, boolean esCompra) throws ProductoException; 	
+ 	public void eliminarProducto(Gallina gallina) throws SinDineroException; 	
  	public void eliminarGallina(Gallina gallina) throws GallinaNotFoundException; 	
  	public void comprarGallina(int cant) throws SinDineroException, ProductoException; 	
  	public void comprarHuevo(int cant) throws SinDineroException, ProductoException;

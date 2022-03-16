@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 @Entity
 @Table(name = "cuenta")
@@ -13,6 +15,9 @@ public class Cuenta {
 	private double dineroCuenta;
 	private int gallinasVendidas;
 	private int huevosVendidos;
+	
+	@Min(value = 0, message="debe ingresar un numero mayor")
+    @Max(value = 50, message="la cantidad maxima es 50")
 	private int gallinasCompra;
 	private int huevosCompra;
 	private double precioGallina;
@@ -53,10 +58,10 @@ public class Cuenta {
 
 	public void setDineroCuenta(double dineroCuenta) throws SinDineroException {
 		if (this.dineroCuenta < 0) {
-			throw new SinDineroException("no hay dinero en cuenta");
+			throw new SinDineroException("Error! no hay dinero en cuenta");
 		}
 		if ((this.dineroCuenta += dineroCuenta) < 0) {
-			throw new SinDineroException("no hay suficiente dinero en cuenta");
+			throw new SinDineroException("Error! no hay suficiente dinero en cuenta");
 		}
 	}
 
