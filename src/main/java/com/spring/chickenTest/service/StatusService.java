@@ -1,5 +1,6 @@
 package com.spring.chickenTest.service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +32,7 @@ public class StatusService implements IStatusService {
 
 	private int diaAgregado = 0;
 
-	private int acumulador = 0;
+	Calendar calendar = Calendar.getInstance();
 
 	private final double MINIMO_EN_CUENTA = 900;
 
@@ -39,12 +40,15 @@ public class StatusService implements IStatusService {
 
 	private final int MUERTE_GALLINA = 20;
 
-	private final int CONVERTIR_HUEVO = 10;
+	private final int CONVERTIR_HUEVO_EDAD = 21;
 	
-	private final boolean MUERTE_BOOLEAN = true;
-	
-	private final boolean NACIMIENTO_BOOLEAN = false;
-	
+	private final int CONVERTIR_HUEVO_PRECIO = 500;
+
+	private final int CREAR_HUEVO = 2;
+
+	private final boolean MUERTE_BOOLEAN_PASAR_DIA = true;
+
+	private final boolean NACIMIENTO_BOOLEAN_PASAR_DIA = false;
 
 	public StatusService(IGallina iGallinaData, ICuenta iCuentaData, IGallinaService iGallinaService) {
 		super();
@@ -65,35 +69,46 @@ public class StatusService implements IStatusService {
 	}
 
 	@Override
-	public void pasarAotroDia() throws ProductoException {
-		diaAgregado++;
-		acumulador++;
+	public Date obtenerFecha() {
+		return calendar.getTime();
+	}
 
-		Date fecha = new Date();
-		Date mañana = new Date(fecha.getTime() + (1000 * 60 * 60 * 24));
+	@Override
+	public void pasarAotroDia() throws ProductoException {
 
 		List<Gallina> listaCompleta = iGallinaService.listarProductos();
-		int dia = 0;
+		calendar.add(Calendar.DAY_OF_MONTH, 1);
+		calendar.getTime();
 		for (Gallina gallina : listaCompleta) {
-			dia = gallina.getPasarDia() + 1;
-			gallina.setPasarDia(dia);
-			if (this.convertirHuevo(gallina, dia)) {
-				actualizarGallina(NACIMIENTO_BOOLEAN);
+			gallina.setFechaPasarDeDia(calendar.getTime());
+			if (convertirHuevo(gallina)) {
+				actualizarGallina(NACIMIENTO_BOOLEAN_PASAR_DIA);
 			}
-
 			iGallinaData.save(gallina);
-
-			if (this.muerteGallina(gallina)) {
-				actualizarGallina(MUERTE_BOOLEAN);
+			if (muerteGallina(gallina)) {
+				actualizarGallina(MUERTE_BOOLEAN_PASAR_DIA);
 			}
-
-			this.crearHuevos();
+			crearHuevos(gallina);
 		}
 	}
-//
+
+	@Override
+	public boolean convertirHuevo(Gallina gallina) {
+
+		if ((gallina.edadGallina() % CONVERTIR_HUEVO_EDAD) == 0 && gallina.isHuevo()) {
+			if (gallina.isHuevo()) {
+				gallina.setHuevo(false);
+				gallina.setFechaCreacion(calendar.getTime());
+				gallina.setDinero(CONVERTIR_HUEVO_PRECIO);
+				iGallinaData.save(gallina);
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public void actualizarGallina(boolean muerte) {
-		Cuenta cuenta = this.plataEnCuenta(1).get();
+		Cuenta cuenta = plataEnCuenta(1).get();
 		if (muerte) {
 			cuenta.setGallinaMuerte(cuenta.getGallinaMuerte() + 1);
 
@@ -103,17 +118,28 @@ public class StatusService implements IStatusService {
 		iCuentaData.save(cuenta);
 	}
 
-//
-	private void crearHuevos() throws ProductoException {
-		List<Gallina> listaCompleta = iGallinaService.listarProductos();
-		if (acumulador == 4) {
-			for (Gallina gallina : listaCompleta) {
+	@Override
+	public boolean muerteGallina(Gallina gallina) {
 
-				if (!gallina.isHuevo()) {
-					iGallinaService.crearProducto(true, 2, false);
+		if (gallina.edadGallina() >= MUERTE_GALLINA) {
+			if (!gallina.isHuevo()) {
+				try {
+					iGallinaService.eliminarGallina(gallina);
+					return true;
+				} catch (GallinaNotFoundException e) {
+					e.printStackTrace();
 				}
 			}
-			acumulador = 0;
+		}
+		return false;
+	}
+
+	private void crearHuevos(Gallina gallina) throws ProductoException {
+
+		if (gallina.edadGallina() > 4 && (gallina.edadGallina() % CREAR_HUEVO == 0) && !gallina.isHuevo()) {
+			if (gallina.edadGallina() != 0) {
+				iGallinaService.crearProducto(true, 1, false);
+			}
 		}
 	}
 
@@ -139,35 +165,6 @@ public class StatusService implements IStatusService {
 	}
 
 	@Override
-	public boolean convertirHuevo(Gallina gallina, int dia) {
-
-		if ((gallina.getPasarDia() - gallina.getCreacion()) >= CONVERTIR_HUEVO) {
-			if (gallina.isHuevo()) {
-				gallina.setHuevo(false);
-				gallina.setCreacion(dia);
-				gallina.setDinero(500);
-				return true;
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public boolean muerteGallina(Gallina gallina) {
-		if ((gallina.getPasarDia() - gallina.getCreacion()) >= MUERTE_GALLINA) {
-			if (!gallina.isHuevo()) {
-				try {
-					iGallinaService.eliminarGallina(gallina);
-					return true;
-				} catch (GallinaNotFoundException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return false;
-	}
-
-	@Override
 	public Optional<Cuenta> plataEnCuenta(int id) {
 		return iCuentaData.findById(id);
 	}
@@ -181,9 +178,8 @@ public class StatusService implements IStatusService {
 		} else {
 			dineroCuenta = -(PRECIO_HUEVO) * cant;
 		}
-		Cuenta cuenta = this.plataEnCuenta(1).get();
-		System.out.println(this.plataEnCuenta(1).get().getDineroCuenta() + dineroCuenta);// sacar
-		if (!(this.plataEnCuenta(1).get().getDineroCuenta() + dineroCuenta < MINIMO_EN_CUENTA)) {
+		Cuenta cuenta = plataEnCuenta(1).get();
+		if (!(plataEnCuenta(1).get().getDineroCuenta() + dineroCuenta < MINIMO_EN_CUENTA)) {
 			cuenta.setPrecioGallina(PRECIO_GALLINA);
 			cuenta.setPrecioHuevo(PRECIO_HUEVO);
 			cuenta.setDineroCuenta(dineroCuenta);
@@ -192,5 +188,4 @@ public class StatusService implements IStatusService {
 			throw new SinDineroException("Error! No se puede gastar mas del limite");
 		}
 	}
-
 }

@@ -26,16 +26,10 @@ public class Gallina {
 	@Column(name = "DINERO")
 	private double dinero;
 
-	@Column(name = "CREACION")
-	private int creacion;
-
-	@Column(name = "PASAR_DIA")
-	private int pasarDia;
-
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaCreacion;
 
-	private Date pasarDeDia;
+	private Date fechaPasarDeDia;
 
 	public Gallina() {
 
@@ -44,10 +38,8 @@ public class Gallina {
 	public Gallina(boolean b) {
 		this.isHuevo = b;
 		this.dinero = 0;
-		this.fechaCreacion = new Date();
-		this.pasarDeDia = null;
-		this.creacion = 0;
-		this.pasarDia = 0;
+		this.fechaCreacion = null;
+		this.fechaPasarDeDia = null;
 	}
 
 	public int getIdGallina() {
@@ -74,22 +66,6 @@ public class Gallina {
 		this.dinero = dinero;
 	}
 
-	public int getCreacion() {
-		return creacion;
-	}
-
-	public void setCreacion(int creacion) {
-		this.creacion = creacion;
-	}
-
-	public int getPasarDia() {
-		return pasarDia;
-	}
-
-	public void setPasarDia(int pasarDia) {
-		this.pasarDia = pasarDia;
-	}
-
 	public Date getFechaCreacion() {
 		return fechaCreacion;
 	}
@@ -98,11 +74,21 @@ public class Gallina {
 		this.fechaCreacion = fechaCreacion;
 	}
 
-	public Date getPasarDeDia() {
-		return pasarDeDia;
+	public Date getFechaPasarDeDia() {
+		return fechaPasarDeDia;
 	}
 
-	public void setPasarDeDia(Date pasarDeDia) {
-		this.pasarDeDia = pasarDeDia;
+	public void setFechaPasarDeDia(Date pasarDeDia) {
+		this.fechaPasarDeDia = pasarDeDia;
 	}
+	
+	public int edadGallina() {
+		int milisecondsByDay = 86400000;
+		int edadProducto = (int) ((this.getFechaPasarDeDia().getTime() - this.getFechaCreacion().getTime())				
+				/ milisecondsByDay);
+		
+		return edadProducto;
+	}
+	
+	
 }

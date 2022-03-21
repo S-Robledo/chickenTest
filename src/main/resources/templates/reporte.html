@@ -11,27 +11,17 @@
 </head>
 <body>
 
-
 	<div class="container mt-4">
 		<h4>Informe de estado de la Granja</h4>
 		<div class="row">
 			<div class="col-md-9">
 				<form th:action="@{/listar}" th:objet=${Gallina} method="GET">
 					<div>
-						<input type="submit" value="Pagina Anterior" class="btn btn-success">
+						<input type="submit" value="Pagina Anterior"
+							class="btn btn-success">
 					</div>
 					<div></div>
 				</form>
-				<!-- <div class="row">
-					<div class="col">
-						<h6>Total de productos de la Granja:</h6>
-						<label th:text="${totalGranja}" class="form-control" readonly></label>
-					</div>
-					<div class="col">
-						<h6>Dinero disponible:</h6>
-						<label th:text="${dineroEnCuenta}" class="form-control" readonly></label>
-					</div>
-				</div> -->
 				<h5>Stock de Productos</h5>
 				<table class="table">
 					<thead>
@@ -102,23 +92,24 @@
 				</table>
 			</div>
 			<div class="col-md-3">
-			    
-			    <div class="col">
-						<h6>Total de productos de la Granja:</h6>
-						<label th:text="${totalGranja}" class="form-control" readonly></label>
-					</div>
-					<div class="col">
-						<h6>Dinero disponible:</h6>
-						<label th:text="${dineroEnCuenta}" class="form-control" readonly></label>
-					</div>
-					<div class="col">
-						<h6>Total Nacimiento de Gallinas:</h6>
-						<label th:text="${totalNacimientoGallinas}" class="form-control" readonly></label>
-					</div>
-					<div class="col">
-						<h6>Total deceso de Gallinas:</h6>
-						<label th:text="${totalMuerteGallinas}" class="form-control" readonly></label>
-					</div>
+				<div class="col">
+					<h6>Total de productos de la Granja:</h6>
+					<label th:text="${totalGranja}" class="form-control" th:readonly></label>
+				</div>
+				<div class="col">
+					<h6>Dinero disponible:</h6>
+					<label th:text="${dineroEnCuenta}" class="form-control" th:readonly></label>
+				</div>
+				<div class="col">
+					<h6>Total Nacimiento de Gallinas:</h6>
+					<label th:text="${totalNacimientoGallinas}" class="form-control"
+						th:readonly></label>
+				</div>
+				<div class="col">
+					<h6>Total deceso de Gallinas:</h6>
+					<label th:text="${totalMuerteGallinas}" class="form-control"
+						th:readonly></label>
+				</div>
 			</div>
 		</div>
 	</div>

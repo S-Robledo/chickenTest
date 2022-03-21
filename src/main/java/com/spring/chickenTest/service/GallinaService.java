@@ -10,9 +10,7 @@ import com.spring.chickenTest.interfaceService.IGallinaService;
 import com.spring.chickenTest.interfaceService.IStatusService;
 import com.spring.chickenTest.interfaces.ICuenta;
 import com.spring.chickenTest.interfaces.IGallina;
-import com.spring.chickenTest.interfaces.IStatus;
 import com.spring.chickenTest.modelo.Cuenta;
-import com.spring.chickenTest.modelo.ExceedsLimitException;
 import com.spring.chickenTest.modelo.Gallina;
 import com.spring.chickenTest.modelo.GallinaNotFoundException;
 import com.spring.chickenTest.modelo.ProductoException;
@@ -34,14 +32,14 @@ public class GallinaService implements IGallinaService {
 
 	private final double PRECIO_HUEVO = 20;
 
-	private final double MAXIMO_EN_CUENTA = 100000;// sugiere 100000
+	private final double MAXIMO_EN_CUENTA = 100000;
 
 	private final int LIMITE_CANT_COMPRA = 30000;
 
 	private final int LIMITE_CANT_VENTA = 2;
-	
+
 	private final double GANANCIA_GALLINA = 1.30;
-	
+
 	private final double GANANCIA_HUEVO = 1.30;
 
 	public double getPRECIO_GALLINA() {
@@ -59,7 +57,7 @@ public class GallinaService implements IGallinaService {
 
 	@Override
 	public List<Gallina> listarGallinas() {
-		List<Gallina> listaCompleta = this.listarProductos();
+		List<Gallina> listaCompleta = listarProductos();
 		List<Gallina> listaGallinas = new ArrayList<Gallina>();
 
 		for (Gallina gallina : listaCompleta) {
@@ -72,7 +70,7 @@ public class GallinaService implements IGallinaService {
 
 	@Override
 	public List<Gallina> listarHuevos() {
-		List<Gallina> listaCompleta = this.listarProductos();
+		List<Gallina> listaCompleta = listarProductos();
 		List<Gallina> listaHuevos = new ArrayList<Gallina>();
 
 		for (Gallina gallina : listaCompleta) {
@@ -84,17 +82,17 @@ public class GallinaService implements IGallinaService {
 	}
 
 	@Override
-	public void crearGallina(int cant) throws ProductoException, SinDineroException { // funciona
+	public void crearGallina(int cant) throws ProductoException, SinDineroException {
 
-		iStatusService.actualizarCuenta(PRECIO_GALLINA, PRECIO_HUEVO, true, cant); // revisado
-		this.crearProducto(false, cant, true);
+		iStatusService.actualizarCuenta(PRECIO_GALLINA, PRECIO_HUEVO, true, cant);
+		crearProducto(false, cant, true);
 	}
 
 	@Override
 	public void crearHuevo(int cant) throws ProductoException, SinDineroException {
 
 		iStatusService.actualizarCuenta(PRECIO_GALLINA, PRECIO_HUEVO, false, cant);
-		this.crearProducto(true, cant, true);
+		crearProducto(true, cant, true);
 
 	}
 
@@ -110,12 +108,13 @@ public class GallinaService implements IGallinaService {
 		for (int i = 0; i < cant; i++) {
 
 			Gallina g = new Gallina(esHuevo);
-			g.setCreacion(iStatusService.obtenerDia());
-			g.setPasarDia(iStatusService.obtenerDia());
+			g.setFechaCreacion(iStatusService.obtenerFecha());
+			g.setFechaPasarDeDia(iStatusService.obtenerFecha());
 			g.setDinero(dinero);
+
 			Gallina gallina = iGallinaData.save(g);
 			if (esCompra) {
-				this.registrarCompra(g);
+				registrarCompra(g);
 			}
 			if (gallina.equals(null)) {
 				throw new ProductoException("Error! No se pudo crear Producto");
@@ -129,15 +128,14 @@ public class GallinaService implements IGallinaService {
 		double dineroCuenta = 0;
 		if (!gallina.isHuevo()) {
 			cuenta.setPrecioGallina(gallina.getDinero() * GANANCIA_GALLINA);
-			dineroCuenta = gallina.getDinero();
+			dineroCuenta = cuenta.getPrecioGallina();
 			cuenta.setGallinasVendidas(cuenta.getGallinasVendidas() + 1);
 		} else {
 			cuenta.setPrecioHuevo(gallina.getDinero() * GANANCIA_HUEVO);
-			dineroCuenta = gallina.getDinero();
+			dineroCuenta = cuenta.getPrecioHuevo();
 			cuenta.setHuevosVendidos(cuenta.getHuevosVendidos() + 1);
 		}
 		if (!(iStatusService.plataEnCuenta(1).get().getDineroCuenta() + dineroCuenta > MAXIMO_EN_CUENTA)) {
-			System.out.println(iStatusService.plataEnCuenta(1).get().getDineroCuenta() + dineroCuenta);
 			cuenta.setDineroCuenta(dineroCuenta);
 			iCuentaData.save(cuenta);
 			iGallinaData.deleteById(gallina.getIdGallina());
@@ -154,10 +152,8 @@ public class GallinaService implements IGallinaService {
 	@Override
 	public void comprarGallina(int cant) throws ProductoException, SinDineroException {
 
-		if (this.listarGallinas().size() + cant < LIMITE_CANT_COMPRA) {
-
-			this.crearGallina(cant);
-
+		if (listarGallinas().size() + cant < LIMITE_CANT_COMPRA) {
+			crearGallina(cant);
 		} else {
 			throw new ProductoException("Error! Supera limite de compra");
 		}
@@ -166,10 +162,8 @@ public class GallinaService implements IGallinaService {
 	@Override
 	public void comprarHuevo(int cant) throws ProductoException, SinDineroException {
 
-		if ((this.listarHuevos().size() + cant) < LIMITE_CANT_COMPRA) {
-
-			this.crearHuevo(cant);
-
+		if ((listarHuevos().size() + cant) < LIMITE_CANT_COMPRA) {
+			crearHuevo(cant);
 		} else {
 			throw new ProductoException("Error! Supera limite de compra");
 		}
@@ -178,14 +172,12 @@ public class GallinaService implements IGallinaService {
 	@Override
 	public void venderGallina(int cant) throws GallinaNotFoundException, SinDineroException {
 
-		if (this.listarGallinas().size() <= 0) {
+		if (listarGallinas().size() <= 0) {
 			throw new GallinaNotFoundException("Error! no hay producto para vender");
-		} else if (this.listarGallinas().size() - cant >= LIMITE_CANT_VENTA) {
-
+		} else if (listarGallinas().size() - cant >= LIMITE_CANT_VENTA) {
 			for (int i = 0; i < cant; i++) {
 				Gallina gallina = iStatusService.idGallina(true);
-				
-				this.eliminarProducto(gallina);
+				eliminarProducto(gallina);
 			}
 		} else {
 			throw new GallinaNotFoundException("Error! no puede vender mas del limite");
@@ -195,19 +187,16 @@ public class GallinaService implements IGallinaService {
 	@Override
 	public void venderHuevo(int cant) throws GallinaNotFoundException, SinDineroException {
 
-		if (this.listarHuevos().size() <= 0) {
+		if (listarHuevos().size() <= 0) {
 			throw new GallinaNotFoundException("Error! no hay producto para vender");
-		} else if (this.listarHuevos().size() - cant >= LIMITE_CANT_VENTA) {
-
+		} else if (listarHuevos().size() - cant >= LIMITE_CANT_VENTA) {
 			for (int i = 0; i < cant; i++) {
 				Gallina gallina = iStatusService.idGallina(false);
-				
-				this.eliminarProducto(gallina);
+				eliminarProducto(gallina);
 			}
 		} else {
 			throw new GallinaNotFoundException("Error! no puede vender mas del limite");
 		}
-
 	}
 
 	public void registrarCompra(Gallina gallina) {
@@ -219,5 +208,4 @@ public class GallinaService implements IGallinaService {
 		}
 		iCuentaData.save(cuenta);
 	}
-
 }

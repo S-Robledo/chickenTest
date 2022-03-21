@@ -1,17 +1,10 @@
 package com.spring.chickenTest.controller;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import javax.swing.JOptionPane;
-import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import java.text.SimpleDateFormat;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +13,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.spring.chickenTest.interfaceService.IGallinaService;
 import com.spring.chickenTest.interfaceService.IStatusService;
-import com.spring.chickenTest.modelo.Cuenta;
-import com.spring.chickenTest.modelo.Gallina;
 import com.spring.chickenTest.modelo.GallinaNotFoundException;
 import com.spring.chickenTest.modelo.ProductoException;
 import com.spring.chickenTest.modelo.SinDineroException;
@@ -35,19 +26,18 @@ public class StatusController {
 	private IGallinaService iGallinaService;
 	@Autowired
 	private IStatusService iStatusService;
-
 	@Autowired
 	public GallinaService gallinaService;
 
 	private boolean inicio = true;
 
-	private boolean muestra = false;
-	
 	private final double CANTIDAD_MIN = 0;
-	
+
 	private final double CANTIDAD_MAX = 100;
-	
+
 	private final String MSG_WARNING = "Cuidado! Ingresar valor entre '1' y '";
+
+	SimpleDateFormat fe = new SimpleDateFormat("YYYY-MM-dd");
 
 	@GetMapping("/listar")
 	public String listar(Model model) {
@@ -55,17 +45,12 @@ public class StatusController {
 			iStatusService.inicializarCuenta();
 			inicio = false;
 		}
-		List<Gallina> totalGallinas = iGallinaService.listarProductos();
-//		List<Gallina> gallinas = iGallinaService.listarGallinas();
-//		List<Gallina> huevos = iGallinaService.listarHuevos();
-//		model.addAttribute("gallinas", gallinas);
-//		model.addAttribute("huevos", huevos);
-		model.addAttribute("fecha", LocalDate.now());
+		model.addAttribute("fechaFormat", fe.format(iStatusService.obtenerFecha()));
+		model.addAttribute("pasarDeDia", iStatusService.obtenerDia());
 		model.addAttribute("totalGranja", iGallinaService.listarProductos().size());
 		model.addAttribute("totalGallinas", iGallinaService.listarGallinas().size());
 		model.addAttribute("totalHuevos", iGallinaService.listarHuevos().size());
 		model.addAttribute("dineroEnCuenta", iStatusService.plataEnCuenta(1).get().getDineroCuenta());
-		model.addAttribute("pasarDeDia", iStatusService.obtenerDia());
 
 		return "index";
 	}
@@ -76,12 +61,12 @@ public class StatusController {
 
 		try {
 			if (cant > CANTIDAD_MIN && cant < CANTIDAD_MAX) {
-				
+
 				iGallinaService.comprarGallina(cant);
 				attribute.addFlashAttribute("mensaje", "Compra exitosa!").addFlashAttribute("clase", "success");
 			} else {
-				attribute.addFlashAttribute("mensaje", MSG_WARNING + CANTIDAD_MAX +"'")
-						.addFlashAttribute("clase", "warning");
+				attribute.addFlashAttribute("mensaje", MSG_WARNING + CANTIDAD_MAX + "'").addFlashAttribute("clase",
+						"warning");
 			}
 		} catch (SinDineroException | ProductoException e) {
 			e.printStackTrace();
@@ -97,40 +82,40 @@ public class StatusController {
 
 		try {
 			if (cant > CANTIDAD_MIN && cant < CANTIDAD_MAX) {
-				
+
 				iGallinaService.comprarHuevo(cant);
 				attribute.addFlashAttribute("mensaje", "Compra exitosa!").addFlashAttribute("clase", "success");
 			} else {
-				attribute.addFlashAttribute("mensaje", MSG_WARNING + CANTIDAD_MAX +"'")
-						.addFlashAttribute("clase", "warning");
+				attribute.addFlashAttribute("mensaje", MSG_WARNING + CANTIDAD_MAX + "'").addFlashAttribute("clase",
+						"warning");
 			}
 		} catch (SinDineroException | ProductoException e) {
 			e.printStackTrace();
 			attribute.addFlashAttribute("mensaje", e.getMessage()).addFlashAttribute("clase", "danger");
 		}
 		return "redirect:/listar";
-		
+
 	}
 
 	@PostMapping("/venderGallina")
 	public String venderGallina(@RequestParam(value = "cant", defaultValue = "0") int cant,
 			RedirectAttributes attribute) {
-		
+
 		try {
 			if (cant > CANTIDAD_MIN && cant < CANTIDAD_MAX) {
-				
+
 				iGallinaService.venderGallina(cant);
 				attribute.addFlashAttribute("mensaje", "Venta exitosa!").addFlashAttribute("clase", "success");
 			} else {
-				attribute.addFlashAttribute("mensaje", MSG_WARNING + CANTIDAD_MAX +"'")
-						.addFlashAttribute("clase", "warning");
+				attribute.addFlashAttribute("mensaje", MSG_WARNING + CANTIDAD_MAX + "'").addFlashAttribute("clase",
+						"warning");
 			}
 		} catch (GallinaNotFoundException | SinDineroException e) {
 			e.printStackTrace();
 			attribute.addFlashAttribute("mensaje", e.getMessage()).addFlashAttribute("clase", "danger");
 		}
 		return "redirect:/listar";
-		
+
 	}
 
 	@PostMapping("/venderHuevo")
@@ -138,12 +123,12 @@ public class StatusController {
 			RedirectAttributes attribute) {
 		try {
 			if (cant > CANTIDAD_MIN && cant < CANTIDAD_MAX) {
-				
+
 				iGallinaService.venderHuevo(cant);
 				attribute.addFlashAttribute("mensaje", "Venta exitosa!").addFlashAttribute("clase", "success");
 			} else {
-				attribute.addFlashAttribute("mensaje", MSG_WARNING + CANTIDAD_MAX +"'")
-				.addFlashAttribute("clase", "warning");
+				attribute.addFlashAttribute("mensaje", MSG_WARNING + CANTIDAD_MAX + "'").addFlashAttribute("clase",
+						"warning");
 			}
 		} catch (GallinaNotFoundException | SinDineroException e) {
 			e.printStackTrace();
@@ -153,7 +138,7 @@ public class StatusController {
 	}
 
 	@GetMapping("/pasarDeDia")
-	public String pasarDeDia() {
+	public String pasarDeDia(RedirectAttributes attribute) {
 		try {
 			iStatusService.pasarAotroDia();
 		} catch (ProductoException e) {
@@ -165,32 +150,31 @@ public class StatusController {
 	@GetMapping("/reporte")
 	public String reporte(Model model, RedirectAttributes attribute) {
 		try {
-			model.addAttribute("totalGranja", iGallinaService.listarProductos().size());
-			model.addAttribute("dineroEnCuenta", iStatusService.plataEnCuenta(1).get().getDineroCuenta());
 
-			model.addAttribute("costoUnitarioGallina", gallinaService.getPRECIO_GALLINA());
 			model.addAttribute("totalCantGallinas", iGallinaService.listarGallinas().size());
-			model.addAttribute("costoUnitarioHuevo", gallinaService.getPRECIO_HUEVO());
+			model.addAttribute("costoUnitarioGallina", gallinaService.getPRECIO_GALLINA());
 			model.addAttribute("totalCantHuevos", iGallinaService.listarHuevos().size());
+			model.addAttribute("costoUnitarioHuevo", gallinaService.getPRECIO_HUEVO());
 
 			model.addAttribute("gallinasVendidas", iStatusService.plataEnCuenta(1).get().getGallinasVendidas());
-			model.addAttribute("totalVentaGallinas",
-					(iStatusService.plataEnCuenta(1).get().getGallinasVendidas() * iStatusService.plataEnCuenta(1).get().getPrecioGallina()));
+			model.addAttribute("totalVentaGallinas", (iStatusService.plataEnCuenta(1).get().getGallinasVendidas()
+					* iStatusService.plataEnCuenta(1).get().getPrecioGallina()));
 			model.addAttribute("huevosVendidos", iStatusService.plataEnCuenta(1).get().getHuevosVendidos());
-			model.addAttribute("totalVentaHuevos",
-					(iStatusService.plataEnCuenta(1).get().getHuevosVendidos() * iStatusService.plataEnCuenta(1).get().getPrecioHuevo()));
+			model.addAttribute("totalVentaHuevos", (iStatusService.plataEnCuenta(1).get().getHuevosVendidos()
+					* iStatusService.plataEnCuenta(1).get().getPrecioHuevo()));
 
 			model.addAttribute("gallinasCompra", iStatusService.plataEnCuenta(1).get().getGallinasCompra());
-			model.addAttribute("huevosCompra", iStatusService.plataEnCuenta(1).get().getHuevosCompra());
 			model.addAttribute("totalCompraGallinas",
 					(iStatusService.plataEnCuenta(1).get().getGallinasCompra() * gallinaService.getPRECIO_GALLINA()));
+			model.addAttribute("huevosCompra", iStatusService.plataEnCuenta(1).get().getHuevosCompra());
 			model.addAttribute("totalCompraHuevos",
 					(iStatusService.plataEnCuenta(1).get().getHuevosCompra() * gallinaService.getPRECIO_HUEVO()));
-			
-			//natimiento gallinas muerte gallinas
+
+			model.addAttribute("totalGranja", iGallinaService.listarProductos().size());
+			model.addAttribute("dineroEnCuenta", iStatusService.plataEnCuenta(1).get().getDineroCuenta());
 			model.addAttribute("totalNacimientoGallinas", iStatusService.plataEnCuenta(1).get().getGallinaNacimiento());
 			model.addAttribute("totalMuerteGallinas", iStatusService.plataEnCuenta(1).get().getGallinaMuerte());
-			
+
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 			attribute.addFlashAttribute("mensaje", e.getMessage()).addFlashAttribute("clase", "danger");

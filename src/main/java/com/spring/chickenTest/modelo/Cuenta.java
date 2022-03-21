@@ -14,8 +14,7 @@ public class Cuenta {
 	private int idCuenta;
 	private double dineroCuenta;
 	private int gallinasVendidas;
-	private int huevosVendidos;
-	
+	private int huevosVendidos;	
 	@Min(value = 0, message="debe ingresar un numero mayor")
     @Max(value = 50, message="la cantidad maxima es 50")
 	private int gallinasCompra;
