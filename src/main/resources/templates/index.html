@@ -14,15 +14,16 @@
 	<div class="container mt-4">
 
 		<div class="row">
-			<div class="col-sm-4">
+			<div class="col-sm-2">
+				<img src="/images/chicken-img.png" class="rounded-3" alt="...">
+			</div>
+			<div class="col-sm-4">				
 				<h3>Chicken test</h3>
 			</div>
-			<div class="col-sm-6"></div>
+			<div class="col-sm-4"></div>
 			<div class="col-sm-2  bg-light text-dark" th:align="center"
 				th:vertical-align>
 				<div th:text="${fechaFormat}"></div>
-				<!-- <h6>Dia: </h6>
-				<p th:text="${pasarDeDia}" /> -->
 			</div>
 		</div>
 		<div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)"

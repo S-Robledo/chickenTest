@@ -34,7 +34,7 @@ public class GallinaService implements IGallinaService {
 
 	private final double MAXIMO_EN_CUENTA = 100000;
 
-	private final int LIMITE_CANT_COMPRA = 30000;
+	private final int LIMITE_CANT_COMPRA = 3000;
 
 	private final int LIMITE_CANT_VENTA = 2;
 
@@ -93,7 +93,6 @@ public class GallinaService implements IGallinaService {
 
 		iStatusService.actualizarCuenta(PRECIO_GALLINA, PRECIO_HUEVO, false, cant);
 		crearProducto(true, cant, true);
-
 	}
 
 	@Override

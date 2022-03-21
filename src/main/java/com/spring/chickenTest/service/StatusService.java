@@ -30,13 +30,11 @@ public class StatusService implements IStatusService {
 	@Autowired
 	private IGallinaService iGallinaService;
 
-	private int diaAgregado = 0;
-
 	Calendar calendar = Calendar.getInstance();
 
 	private final double MINIMO_EN_CUENTA = 900;
 
-	private final double INICIALIZAR_SALDO = 6000;
+	private final double INICIALIZAR_SALDO = 8000;
 
 	private final int MUERTE_GALLINA = 20;
 
@@ -61,11 +59,6 @@ public class StatusService implements IStatusService {
 	public void inicializarCuenta() {
 		Cuenta cuenta = new Cuenta(1, INICIALIZAR_SALDO, 0, 0, 0, 0, 0, 0);
 		iCuentaData.save(cuenta);
-	}
-
-	@Override
-	public int obtenerDia() {
-		return diaAgregado;
 	}
 
 	@Override

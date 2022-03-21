@@ -6,4 +6,15 @@ h6 {
 	color:black;
 }
 
+img {
+ max-width: 70%;
+ max-height: 70%;
+ object-fit: contain;
  
+ background-color: yellow;
+  
+  /* IMPORTANTE */
+  width: 200px;
+  margin: 0 auto;
+ 
+}

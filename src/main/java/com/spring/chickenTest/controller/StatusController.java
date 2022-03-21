@@ -46,7 +46,6 @@ public class StatusController {
 			inicio = false;
 		}
 		model.addAttribute("fechaFormat", fe.format(iStatusService.obtenerFecha()));
-		model.addAttribute("pasarDeDia", iStatusService.obtenerDia());
 		model.addAttribute("totalGranja", iGallinaService.listarProductos().size());
 		model.addAttribute("totalGallinas", iGallinaService.listarGallinas().size());
 		model.addAttribute("totalHuevos", iGallinaService.listarHuevos().size());

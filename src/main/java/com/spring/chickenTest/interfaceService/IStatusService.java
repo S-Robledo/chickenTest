@@ -11,8 +11,7 @@ import com.spring.chickenTest.modelo.SinDineroException;
 
 public interface IStatusService {	
 	
-	public void inicializarCuenta();	
-	public int obtenerDia();	
+	public void inicializarCuenta();		
 	public void pasarAotroDia() throws ProductoException;
 	public Gallina idGallina (boolean esGallina) throws GallinaNotFoundException;
 	public boolean convertirHuevo(Gallina gallina);	
