@@ -33,7 +33,7 @@ public class StatusController {
 
 	private final double CANTIDAD_MIN = 0;
 
-	private final double CANTIDAD_MAX = 100;
+	private final double CANTIDAD_MAX = 1000;
 
 	private final String MSG_WARNING = "Cuidado! Ingresar valor entre '1' y '";
 
@@ -151,23 +151,23 @@ public class StatusController {
 		try {
 
 			model.addAttribute("totalCantGallinas", iGallinaService.listarGallinas().size());
-			model.addAttribute("costoUnitarioGallina", gallinaService.getPRECIO_GALLINA());
+			model.addAttribute("costoUnitarioGallina", iStatusService.plataEnCuenta(1).get().getPrecioGallinaCompra());
 			model.addAttribute("totalCantHuevos", iGallinaService.listarHuevos().size());
-			model.addAttribute("costoUnitarioHuevo", gallinaService.getPRECIO_HUEVO());
+			model.addAttribute("costoUnitarioHuevo", iStatusService.plataEnCuenta(1).get().getPrecioHuevoCompra());
 
 			model.addAttribute("gallinasVendidas", iStatusService.plataEnCuenta(1).get().getGallinasVendidas());
 			model.addAttribute("totalVentaGallinas", (iStatusService.plataEnCuenta(1).get().getGallinasVendidas()
-					* iStatusService.plataEnCuenta(1).get().getPrecioGallina()));
+					* iStatusService.plataEnCuenta(1).get().getPrecioGallinaVenta()));
 			model.addAttribute("huevosVendidos", iStatusService.plataEnCuenta(1).get().getHuevosVendidos());
 			model.addAttribute("totalVentaHuevos", (iStatusService.plataEnCuenta(1).get().getHuevosVendidos()
-					* iStatusService.plataEnCuenta(1).get().getPrecioHuevo()));
+					* iStatusService.plataEnCuenta(1).get().getPrecioHuevoVenta()));
 
 			model.addAttribute("gallinasCompra", iStatusService.plataEnCuenta(1).get().getGallinasCompra());
 			model.addAttribute("totalCompraGallinas",
-					(iStatusService.plataEnCuenta(1).get().getGallinasCompra() * gallinaService.getPRECIO_GALLINA()));
+					(iStatusService.plataEnCuenta(1).get().getGallinasCompra() * iStatusService.plataEnCuenta(1).get().getPrecioGallinaCompra()));
 			model.addAttribute("huevosCompra", iStatusService.plataEnCuenta(1).get().getHuevosCompra());
 			model.addAttribute("totalCompraHuevos",
-					(iStatusService.plataEnCuenta(1).get().getHuevosCompra() * gallinaService.getPRECIO_HUEVO()));
+					(iStatusService.plataEnCuenta(1).get().getHuevosCompra() * iStatusService.plataEnCuenta(1).get().getPrecioHuevoCompra()));
 
 			model.addAttribute("totalGranja", iGallinaService.listarProductos().size());
 			model.addAttribute("dineroEnCuenta", iStatusService.plataEnCuenta(1).get().getDineroCuenta());

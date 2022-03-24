@@ -17,7 +17,7 @@
 			<div class="col-sm-2">
 				<img src="/images/chicken-img.png" class="rounded-3" alt="...">
 			</div>
-			<div class="col-sm-4">				
+			<div class="col-sm-4">
 				<h3>Chicken test</h3>
 			</div>
 			<div class="col-sm-4"></div>
@@ -26,11 +26,13 @@
 				<div th:text="${fechaFormat}"></div>
 			</div>
 		</div>
-		<div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)"
+		<div >
+		<div th:id="algo" th:classappend="'alert-' + (${clase != null} ? ${clase} : info)"
 			th:if="${mensaje != null}" th:text="${mensaje}"
 			class="alert alert-dismissible fade show" role="alert">
 			<button type="button" class="btn-close" data-bs-dismiss="alert"
 				aria-label="Close"></button>
+		</div>
 		</div>
 		<div class="btn-group btn-group-lg" role="group" aria-label="...">
 			<div class="col-md-2">
@@ -118,7 +120,7 @@
 							th:text="${dineroEnCuenta}" class="form-control" th:readonly></label>
 					</div>
 				</div>
-				 
+
 			</div>
 		</div>
 	</div>

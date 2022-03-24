@@ -36,17 +36,23 @@ public class StatusService implements IStatusService {
 
 	private final double INICIALIZAR_SALDO = 8000;
 
-	private final int MUERTE_GALLINA = 20;
+	private final int MUERTE_GALLINA = 30;
 
 	private final int CONVERTIR_HUEVO_EDAD = 21;
-	
-	private final int CONVERTIR_HUEVO_PRECIO = 500;
 
 	private final int CREAR_HUEVO = 2;
 
 	private final boolean MUERTE_BOOLEAN_PASAR_DIA = true;
 
 	private final boolean NACIMIENTO_BOOLEAN_PASAR_DIA = false;
+
+	private final double PRECIO_GALLINA = 500;
+
+	private final double PRECIO_HUEVO = 20;
+
+	private final double GANANCIA_GALLINA = 1.30;
+
+	private final double GANANCIA_HUEVO = 1.30;
 
 	public StatusService(IGallina iGallinaData, ICuenta iCuentaData, IGallinaService iGallinaService) {
 		super();
@@ -57,7 +63,8 @@ public class StatusService implements IStatusService {
 
 	@Override
 	public void inicializarCuenta() {
-		Cuenta cuenta = new Cuenta(1, INICIALIZAR_SALDO, 0, 0, 0, 0, 0, 0);
+		Cuenta cuenta = new Cuenta(1, INICIALIZAR_SALDO, 0, 0, 0, 0, (PRECIO_GALLINA), (PRECIO_HUEVO),
+				(PRECIO_GALLINA * GANANCIA_GALLINA), (PRECIO_HUEVO * GANANCIA_HUEVO));
 		iCuentaData.save(cuenta);
 	}
 
@@ -92,7 +99,6 @@ public class StatusService implements IStatusService {
 			if (gallina.isHuevo()) {
 				gallina.setHuevo(false);
 				gallina.setFechaCreacion(calendar.getTime());
-				gallina.setDinero(CONVERTIR_HUEVO_PRECIO);
 				iGallinaData.save(gallina);
 				return true;
 			}
@@ -163,18 +169,16 @@ public class StatusService implements IStatusService {
 	}
 
 	@Override
-	public void actualizarCuenta(double PRECIO_GALLINA, double PRECIO_HUEVO, boolean esGallina, int cant)
+	public void actualizarCuenta(boolean esGallina, int cant)
 			throws SinDineroException {
+		Cuenta cuenta = plataEnCuenta(1).get();
 		double dineroCuenta = 0;
 		if (esGallina) {
-			dineroCuenta = -(PRECIO_GALLINA) * cant;
+			dineroCuenta = -(cuenta.getPrecioGallinaCompra() * cant);
 		} else {
-			dineroCuenta = -(PRECIO_HUEVO) * cant;
+			dineroCuenta = -(cuenta.getPrecioHuevoCompra() * cant);
 		}
-		Cuenta cuenta = plataEnCuenta(1).get();
 		if (!(plataEnCuenta(1).get().getDineroCuenta() + dineroCuenta < MINIMO_EN_CUENTA)) {
-			cuenta.setPrecioGallina(PRECIO_GALLINA);
-			cuenta.setPrecioHuevo(PRECIO_HUEVO);
 			cuenta.setDineroCuenta(dineroCuenta);
 			iCuentaData.save(cuenta);
 		} else {

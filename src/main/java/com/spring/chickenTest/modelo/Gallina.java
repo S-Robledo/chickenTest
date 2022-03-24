@@ -19,16 +19,13 @@ public class Gallina {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_GALLINA")
 	private int idGallina;
-
+	
 	@Column(name = "IS_HUEVO")
 	private boolean isHuevo;
-
-	@Column(name = "DINERO")
-	private double dinero;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaCreacion;
-
+	
 	private Date fechaPasarDeDia;
 
 	public Gallina() {
@@ -37,7 +34,6 @@ public class Gallina {
 
 	public Gallina(boolean b) {
 		this.isHuevo = b;
-		this.dinero = 0;
 		this.fechaCreacion = null;
 		this.fechaPasarDeDia = null;
 	}
@@ -58,14 +54,6 @@ public class Gallina {
 		this.isHuevo = isHuevo;
 	}
 
-	public double getDinero() {
-		return dinero;
-	}
-
-	public void setDinero(double dinero) {
-		this.dinero = dinero;
-	}
-
 	public Date getFechaCreacion() {
 		return fechaCreacion;
 	}
@@ -81,14 +69,12 @@ public class Gallina {
 	public void setFechaPasarDeDia(Date pasarDeDia) {
 		this.fechaPasarDeDia = pasarDeDia;
 	}
-	
+
 	public int edadGallina() {
 		int milisecondsByDay = 86400000;
-		int edadProducto = (int) ((this.getFechaPasarDeDia().getTime() - this.getFechaCreacion().getTime())				
+		int edadProducto = (int) ((this.getFechaPasarDeDia().getTime() - this.getFechaCreacion().getTime())
 				/ milisecondsByDay);
-		
 		return edadProducto;
 	}
-	
-	
+
 }

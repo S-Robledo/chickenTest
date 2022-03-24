@@ -17,6 +17,6 @@ public interface IStatusService {
 	public boolean convertirHuevo(Gallina gallina);	
 	public boolean muerteGallina(Gallina gallina);
 	public Optional<Cuenta> plataEnCuenta(int id);	 
-	public void actualizarCuenta(double PRECIO_GALLINA, double PRECIO_HUEVO, boolean esGallina, int cant) throws SinDineroException;
+	public void actualizarCuenta(boolean esGallina, int cant) throws SinDineroException;
 	public Date obtenerFecha();	
 }

@@ -28,27 +28,11 @@ public class GallinaService implements IGallinaService {
 	@Autowired
 	private IStatusService iStatusService;
 
-	private final double PRECIO_GALLINA = 500;
-
-	private final double PRECIO_HUEVO = 20;
-
 	private final double MAXIMO_EN_CUENTA = 100000;
 
-	private final int LIMITE_CANT_COMPRA = 3000;
+	private final int LIMITE_CANT_COMPRA = 1000;
 
 	private final int LIMITE_CANT_VENTA = 2;
-
-	private final double GANANCIA_GALLINA = 1.30;
-
-	private final double GANANCIA_HUEVO = 1.30;
-
-	public double getPRECIO_GALLINA() {
-		return PRECIO_GALLINA;
-	}
-
-	public double getPRECIO_HUEVO() {
-		return PRECIO_HUEVO;
-	}
 
 	@Override
 	public List<Gallina> listarProductos() {
@@ -84,32 +68,25 @@ public class GallinaService implements IGallinaService {
 	@Override
 	public void crearGallina(int cant) throws ProductoException, SinDineroException {
 
-		iStatusService.actualizarCuenta(PRECIO_GALLINA, PRECIO_HUEVO, true, cant);
+		iStatusService.actualizarCuenta(true, cant);
 		crearProducto(false, cant, true);
 	}
 
 	@Override
 	public void crearHuevo(int cant) throws ProductoException, SinDineroException {
 
-		iStatusService.actualizarCuenta(PRECIO_GALLINA, PRECIO_HUEVO, false, cant);
+		iStatusService.actualizarCuenta(false, cant);
 		crearProducto(true, cant, true);
 	}
 
 	@Override
 	public void crearProducto(boolean esHuevo, int cant, boolean esCompra) throws ProductoException {
 
-		double dinero = 0;
-		if (esHuevo) {
-			dinero = PRECIO_HUEVO;
-		} else {
-			dinero = PRECIO_GALLINA;
-		}
 		for (int i = 0; i < cant; i++) {
 
 			Gallina g = new Gallina(esHuevo);
 			g.setFechaCreacion(iStatusService.obtenerFecha());
 			g.setFechaPasarDeDia(iStatusService.obtenerFecha());
-			g.setDinero(dinero);
 
 			Gallina gallina = iGallinaData.save(g);
 			if (esCompra) {
@@ -126,12 +103,10 @@ public class GallinaService implements IGallinaService {
 		Cuenta cuenta = iStatusService.plataEnCuenta(1).get();
 		double dineroCuenta = 0;
 		if (!gallina.isHuevo()) {
-			cuenta.setPrecioGallina(gallina.getDinero() * GANANCIA_GALLINA);
-			dineroCuenta = cuenta.getPrecioGallina();
+			dineroCuenta = cuenta.getPrecioGallinaVenta();
 			cuenta.setGallinasVendidas(cuenta.getGallinasVendidas() + 1);
 		} else {
-			cuenta.setPrecioHuevo(gallina.getDinero() * GANANCIA_HUEVO);
-			dineroCuenta = cuenta.getPrecioHuevo();
+			dineroCuenta = cuenta.getPrecioHuevoVenta();
 			cuenta.setHuevosVendidos(cuenta.getHuevosVendidos() + 1);
 		}
 		if (!(iStatusService.plataEnCuenta(1).get().getDineroCuenta() + dineroCuenta > MAXIMO_EN_CUENTA)) {

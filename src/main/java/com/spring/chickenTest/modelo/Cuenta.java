@@ -14,13 +14,15 @@ public class Cuenta {
 	private int idCuenta;
 	private double dineroCuenta;
 	private int gallinasVendidas;
-	private int huevosVendidos;	
-	@Min(value = 0, message="debe ingresar un numero mayor")
-    @Max(value = 50, message="la cantidad maxima es 50")
+	private int huevosVendidos;
+	@Min(value = 0, message = "debe ingresar un numero mayor")
+	@Max(value = 50, message = "la cantidad maxima es 50")
 	private int gallinasCompra;
 	private int huevosCompra;
-	private double precioGallina;
-	private double precioHuevo;
+	private double precioGallinaCompra;
+	private double precioHuevoCompra;
+	private double precioGallinaVenta;
+	private double precioHuevoVenta;
 	private int gallinaNacimiento;
 	private int gallinaMuerte;
 
@@ -29,15 +31,19 @@ public class Cuenta {
 	}
 
 	public Cuenta(int idCuenta, double dineroCuenta, int gallinasVendidas, int huevosVendidos, int gallinasCompra,
-			int huevosCompra, double precioGallina, double precioHuevo) {
+			int huevosCompra, double precioGallinaCompra, double precioHuevoCompra, double precioGallinaVenta,
+			double precioHuevoVenta) {
 		this.idCuenta = idCuenta;
 		this.dineroCuenta = dineroCuenta;
 		this.gallinasVendidas = gallinasVendidas;
 		this.huevosVendidos = huevosVendidos;
 		this.gallinasCompra = gallinasCompra;
 		this.huevosCompra = huevosCompra;
-		this.precioGallina = precioGallina;
-		this.precioHuevo = precioHuevo;
+		this.precioGallinaCompra = precioGallinaCompra;
+		this.precioHuevoCompra = precioHuevoCompra;
+		this.precioGallinaVenta = precioGallinaVenta;
+		this.precioHuevoVenta = precioHuevoVenta;
+
 	}
 
 	public Cuenta(int idCuenta, double dineroCuenta) {
@@ -98,20 +104,36 @@ public class Cuenta {
 		this.huevosCompra = huevosCompra;
 	}
 
-	public double getPrecioGallina() {
-		return precioGallina;
+	public double getPrecioGallinaCompra() {
+		return precioGallinaCompra;
 	}
 
-	public void setPrecioGallina(double precioGallina) {
-		this.precioGallina = precioGallina;
+	public void setPrecioGallinaCompra(double precioGallina) {
+		this.precioGallinaCompra = precioGallina;
 	}
 
-	public double getPrecioHuevo() {
-		return precioHuevo;
+	public double getPrecioHuevoCompra() {
+		return precioHuevoCompra;
 	}
 
-	public void setPrecioHuevo(double precioHuevo) {
-		this.precioHuevo = precioHuevo;
+	public void setPrecioHuevoCompra(double precioHuevo) {
+		this.precioHuevoCompra = precioHuevo;
+	}
+
+	public double getPrecioGallinaVenta() {
+		return precioGallinaVenta;
+	}
+
+	public void setPrecioGallinaVenta(double precioGallinaVenta) {
+		this.precioGallinaVenta = precioGallinaVenta;
+	}
+
+	public double getPrecioHuevoVenta() {
+		return precioHuevoVenta;
+	}
+
+	public void setPrecioHuevoVenta(double precioHuevoVenta) {
+		this.precioHuevoVenta = precioHuevoVenta;
 	}
 
 	public int getGallinaNacimiento() {
@@ -129,6 +151,5 @@ public class Cuenta {
 	public void setGallinaMuerte(int gallinaMuerte) {
 		this.gallinaMuerte = gallinaMuerte;
 	}
-	
-	
+
 }
