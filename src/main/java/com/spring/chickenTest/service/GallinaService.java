@@ -126,7 +126,7 @@ public class GallinaService implements IGallinaService {
 	@Override
 	public void comprarGallina(int cant) throws ProductoException, SinDineroException {
 
-		if (listarGallinas().size() + cant < LIMITE_CANT_COMPRA) {
+		if (listarGallinas().size() + cant <= LIMITE_CANT_COMPRA) {
 			crearGallina(cant);
 		} else {
 			throw new ProductoException("Error! Supera limite de compra");
@@ -136,7 +136,7 @@ public class GallinaService implements IGallinaService {
 	@Override
 	public void comprarHuevo(int cant) throws ProductoException, SinDineroException {
 
-		if ((listarHuevos().size() + cant) < LIMITE_CANT_COMPRA) {
+		if ((listarHuevos().size() + cant) <= LIMITE_CANT_COMPRA) {
 			crearHuevo(cant);
 		} else {
 			throw new ProductoException("Error! Supera limite de compra");

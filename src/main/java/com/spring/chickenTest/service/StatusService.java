@@ -34,7 +34,7 @@ public class StatusService implements IStatusService {
 
 	private final double MINIMO_EN_CUENTA = 900;
 
-	private final double INICIALIZAR_SALDO = 8000;
+	private final double INICIALIZAR_SALDO = 30000;
 
 	private final int MUERTE_GALLINA = 30;
 
